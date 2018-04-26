@@ -21,7 +21,7 @@ public:
      * \brief Constructoor used in flow of aapplication
      * it receives pointer to SISO - object to simulate
      * Regulator - pointer to regulator object
-     * Generator -  pointer to generator that generates set pint value
+     * Generator -  pointer to generator that generates set point value
      * QString - current regulator type
      */
     RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, QString currentRegType="P");

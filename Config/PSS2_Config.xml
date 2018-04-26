@@ -1,1 +1,4 @@
-<noise><value>10</value></noise>
+<step><value>10</value></step>
+<sine><value>10</value></sine>
+<step><value>30</value></step>
+<noise><value>1</value></noise>

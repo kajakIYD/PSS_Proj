@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -149,7 +149,7 @@
        <rect>
         <x>20</x>
         <y>30</y>
-        <width>151</width>
+        <width>201</width>
         <height>24</height>
        </rect>
       </property>
@@ -334,7 +334,7 @@
        <rect>
         <x>490</x>
         <y>30</y>
-        <width>141</width>
+        <width>201</width>
         <height>24</height>
        </rect>
       </property>
@@ -404,7 +404,7 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>690</x>
+        <x>650</x>
         <y>370</y>
         <width>141</width>
         <height>24</height>
@@ -496,7 +496,7 @@
      <widget class="QDoubleSpinBox" name="w_triangleChangeA">
       <property name="geometry">
        <rect>
-        <x>780</x>
+        <x>710</x>
         <y>430</y>
         <width>64</width>
         <height>25</height>
@@ -506,7 +506,7 @@
      <widget class="QLabel" name="label_38">
       <property name="geometry">
        <rect>
-        <x>693</x>
+        <x>660</x>
         <y>430</y>
         <width>22</width>
         <height>24</height>
@@ -590,7 +590,7 @@
      <widget class="QDoubleSpinBox" name="w_triangleChangeInterval">
       <property name="geometry">
        <rect>
-        <x>770</x>
+        <x>750</x>
         <y>480</y>
         <width>64</width>
         <height>25</height>
@@ -600,7 +600,7 @@
      <widget class="QLabel" name="label_41">
       <property name="geometry">
        <rect>
-        <x>683</x>
+        <x>660</x>
         <y>480</y>
         <width>71</width>
         <height>24</height>
@@ -618,7 +618,7 @@
      <widget class="QLabel" name="label_42">
       <property name="geometry">
        <rect>
-        <x>870</x>
+        <x>850</x>
         <y>370</y>
         <width>141</width>
         <height>24</height>
@@ -636,9 +636,9 @@
      <widget class="QLabel" name="label_43">
       <property name="geometry">
        <rect>
-        <x>863</x>
+        <x>850</x>
         <y>430</y>
-        <width>71</width>
+        <width>91</width>
         <height>24</height>
        </rect>
       </property>
@@ -1083,7 +1083,7 @@
      <x>0</x>
      <y>0</y>
      <width>1019</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

@@ -14,10 +14,6 @@ public:
      */
     PID(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, Generator *generator);
     /*!
-     * \brief Trivial constructor
-     */
-    PID();
-    /*!
      * \brief Destructor
      */
     ~PID();
