@@ -6,6 +6,7 @@
 
 class Config
 {
+    //Komentarze!
 public:
     Config(const char* filePath);
     Config();
