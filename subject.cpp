@@ -28,9 +28,9 @@ void Subject::Notify (double u, double y) const {
     }
 }
 
-//void Subject::Notify (double y) const {
-//    std::list<Observer *>::const_iterator it = s_Observers.begin();
-//    for (; it != s_Observers.end(); ++it) {
-//            (*it)->Update(y);
-//    }
-//}
+void Subject::Notify (double y) const {
+    std::list<Observer *>::const_iterator it = s_Observers.begin();
+    for (; it != s_Observers.end(); ++it) {
+            (*it)->Update(y);
+    }
+}

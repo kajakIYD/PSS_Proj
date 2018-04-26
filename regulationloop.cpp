@@ -29,6 +29,13 @@ double RegulationLoop::Simulate_step(double input)
     return s_output;
 }
 
+double RegulationLoop::GetSP()
+{
+    return s_reg->GetSP();
+}
+
+
+
 void RegulationLoop::UpdatePlot()
 {
     Notify(s_input, s_output);
@@ -43,6 +50,9 @@ void RegulationLoop::SaveToFile()
        s_file.flush();
    }
 }
+
+
+
 
 //instead of multiple parameters use map, check exceptions
 void RegulationLoop::ChangeRegParameters(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, double alpha/*and so on?...*/)

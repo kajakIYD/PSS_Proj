@@ -39,7 +39,9 @@ SOURCES += \
     signal.cpp \
     plotdelegate.cpp \
     regulationloop.cpp \
-    pid.cpp
+    pid.cpp \
+    identify.cpp \
+    setpointplot.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,7 +58,9 @@ HEADERS += \
     configregulatorparameters.h \
     signal.h \
     regulationloop.h \
-    pid.h
+    pid.h \
+    identify.h \
+    setpointplot.h
 
 FORMS += \
         mainwindow.ui

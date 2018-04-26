@@ -17,6 +17,7 @@ PID::PID(double kr, double Ti, double Td, double N, double b, double max_u, doub
             this->Td = Td;
             this->N = N;
             this->b = b;
+            this->SP = 0;
         }
         else
         {
@@ -65,6 +66,10 @@ double PID::GetU()
     return u;
 }
 
+double PID::GetSP()
+{
+    return SP;
+}
 
 void PID::Update(double y)
 {
@@ -95,6 +100,7 @@ double PID::Simulate_step(double y)
 
     u_d = Td/(Td+N*Tp)*prev_u_d - kr*(N*Td)/(Td+N*Tp)*(y - prev_y);
     prev_u_d = u_d;
+    //Control limitation
     u = ((u_p + u_i + u_d) > max_u) ? max_u : (u_p + u_i + u_d);
     prev_y = y;
 

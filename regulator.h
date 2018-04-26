@@ -28,6 +28,10 @@ public:
     virtual void Update(double y)=0;
     virtual double Simulate_step(double input)=0;
     virtual void SetTime(int time)=0;
+    /*!
+     * \brief Simple getter for regulation setpoint (double SP)
+     */
+    virtual double GetSP()=0;
 
     double max_u;
     double min_u;

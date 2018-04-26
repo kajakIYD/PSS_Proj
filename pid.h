@@ -7,22 +7,26 @@ class PID : public Regulator
 {
 public:
     /*!
-     * \brief Constructor that construct object with specified gain(kr) and
-     * signal generator (generator)
+     * \brief Constructor that construct regulator PID with specified gain(kr),
+     * Integration time(Ti), derivative time, filtering parameter N, weight coefficient b,
+     * upper (max_u) and lower (min_u) bound of control signal and
+     * signal generator (generator) that helps to generate SetPoint signal
      */
     PID(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, Generator *generator);
     /*!
-     * \brief Constructor
+     * \brief Trivial constructor
      */
     PID();
     /*!
      * \brief Destructor
      */
     ~PID();
+
+    /*!
+     * \brief Method updating plots
+     */
     void Update(double x, double y){}
     void Update(double y);
-    //    void SetSP(double SP);
-
     /*!
      * \brief simulate_step
      * perform one simulation step
@@ -33,13 +37,15 @@ public:
      * \brief Simple getter for regulation control (double u)
      */
     double GetU();
-
-
+    /*!
+     * \brief Simple getter for regulation setPoint
+     */
+    double GetSP();
+    /*!
+     * \brief Setter for Simulation time for regulator (in case of resetting simulation)
+     */
     void SetTime(int time);
 
-    /*!
-     * \brief Simulation time for regulator
-     */
 private:
     double kr;
     double Ti;

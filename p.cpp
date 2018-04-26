@@ -27,6 +27,11 @@ double P::GetU()
     return u;
 }
 
+double P::GetSP()
+{
+    return this->SP;
+}
+
 
 void P::Update(double y)
 {

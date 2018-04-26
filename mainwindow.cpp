@@ -94,6 +94,7 @@ void MainWindow::updateView()
 
             currentOutput = s_regLoop -> Simulate_step(currentOutput);
         }
+        PlotSP();
         MainWindow::time++;
         s_regLoop->time = time;
     }
@@ -112,8 +113,25 @@ void MainWindow::updateViewStep()
         ui->Plot1->replot();
     }
     currentOutput = s_regLoop -> Simulate_step(currentOutput);
+    PlotSP();
     MainWindow::time++;
     s_regLoop->time = MainWindow::time;
+}
+
+void MainWindow::PlotSP()
+{
+    this->s_TimeVec.push_back(time);
+    this->s_SPVec.push_back(s_regLoop->GetSP());
+    this->ui->Plot1->graph(1)->setData(this->s_TimeVec,this->s_SPVec);
+    this->ui->Plot1->yAxis->rescale();
+
+    if (s_TimeVec.size()>50)
+    {
+        this->ui->Plot1->xAxis->setRange(s_TimeVec.size()-50, s_TimeVec.size());
+    }
+
+    this->ui->Plot1->replot();
+    return;
 }
 
 

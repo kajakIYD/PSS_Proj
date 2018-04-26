@@ -49,6 +49,11 @@ public:
      * \brief Simple getter of an simulation output
      */
     double GetOutput();
+
+    /*!
+     * \brief Simple getter of an simulation set point
+     */
+    double GetSP();
     /*!
      * \brief Method that allows to change regulator parameters,
      * naturally depending on regulator type

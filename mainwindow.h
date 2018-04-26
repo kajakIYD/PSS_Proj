@@ -50,6 +50,8 @@ private slots:
     void on_changeRegulatorButton_clicked(bool checked);
 
 private:
+    void PlotSP();
+
     Ui::MainWindow *ui;
 
     ARX *s_arx;
@@ -64,6 +66,9 @@ private:
     PlotDelegate *s_plot2Delegate;
     PlotDelegate *s_plot3Delegate;
 
+
+    QVector<double> s_SPVec = {};
+    QVector<double> s_TimeVec = {};
 
     void updateViewStep();
     string doubleToString(double val);

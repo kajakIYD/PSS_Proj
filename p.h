@@ -35,6 +35,8 @@ public:
      */
     double GetU();
 
+    double GetSP();
+
     /*!
      * \brief Simulation time for regulator
      */
