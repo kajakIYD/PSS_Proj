@@ -3,8 +3,8 @@
 Identify::Identify()
 {
     //Init P with beta
-    q = (s_lambda_max-s_lambda_min)/s_lambda_max;
-    r = s_lambda_min;
+    s_q = (s_lambda_max-s_lambda_min)/s_lambda_max;
+    s_r = s_lambda_min;
 
 }
 
@@ -21,5 +21,5 @@ double Identify::Calculate_P(double u, double y)
         // P(i) = q*P_tmp(i) + r*I;
 
     }
-    return s_P;
+    return 3;//s_P;
 }

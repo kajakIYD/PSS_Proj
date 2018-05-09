@@ -5,15 +5,15 @@ ARX::ARX()
     //destrctor and make it aggregation(outside of that class, in mw)
     this->conf = new Config("E:\\Qt\\Projects\\PSS_New\\PSS\\Config\\PSS_Config.xml");
 
-    parA = conf->A;
-    parB = conf->B;
+    s_parA = conf->A;
+    s_parB = conf->B;
 
     s_k = conf->delay;
     s_switchTime = conf->switchTime;
 
     // stopnie wielomianów
-    s_dA = parA.size();
-    s_dB = parB.size()-1;
+    s_dA = s_parA.size();
+    s_dB = s_parB.size()-1;
 
     // wstępne zerowanie wektorów
     for(int i=0; i < s_dA;i++)
@@ -33,14 +33,14 @@ ARX::~ARX()
 
 void ARX::UpdateParameters()
 {
-    parA = conf->A_N;
-    parB = conf->B_N;
+    s_parA = conf->A_N;
+    s_parB = conf->B_N;
 }
 
 void ARX::ResetParameters()
 {
-    parA = conf->A;
-    parB = conf->B;
+    s_parA = conf->A;
+    s_parB = conf->B;
 }
 
 
@@ -82,8 +82,8 @@ double ARX::Simulate_step(double input)
 //    advance(it_subU, -this->s_dB);
 //    auto it_subY = subY.end();
 //    advance(it_subY, -this->s_dA);
-    output1 = inner_product(parB.begin(), parB.end(), subU.begin(), 0.0);
-    output2 = - inner_product(parA.begin(), parA.end(), subY.begin(), 0.0);
+    output1 = inner_product(s_parB.begin(), s_parB.end(), subU.begin(), 0.0);
+    output2 = - inner_product(s_parA.begin(), s_parA.end(), subY.begin(), 0.0);
     dist = 0 - e;
 
     this->y.pop_back();

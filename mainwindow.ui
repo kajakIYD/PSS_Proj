@@ -322,18 +322,18 @@
      <widget class="QCustomPlot" name="Plot1_2" native="true">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>600</x>
         <y>100</y>
-        <width>371</width>
-        <height>251</height>
+        <width>271</width>
+        <height>181</height>
        </rect>
       </property>
      </widget>
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>490</x>
-        <y>30</y>
+        <x>380</x>
+        <y>20</y>
         <width>201</width>
         <height>24</height>
        </rect>
@@ -918,6 +918,99 @@
        <string>Reset Set Point</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_H">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>130</y>
+        <width>31</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>H</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="w_changeH">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>130</y>
+        <width>64</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="value">
+       <double>20.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_L">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>170</y>
+        <width>31</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>L</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="w_changeL">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>170</y>
+        <width>64</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="value">
+       <double>20.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_23">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>210</y>
+        <width>31</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Alpha</string>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="w_changeAlpha">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>210</y>
+        <width>64</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="value">
+       <double>20.000000000000000</double>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1083,7 +1176,7 @@
      <x>0</x>
      <y>0</y>
      <width>1019</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

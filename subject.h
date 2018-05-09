@@ -25,6 +25,7 @@ public:
      * \brief Method that notifies the subjects (plots) and send
      * u on plot 2 and y at plot 1
      */
+    void Notify (double u,  double y, double SP) const;
     void Notify (double u,  double y) const;
     void Notify (double y) const;
 private:

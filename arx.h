@@ -49,8 +49,8 @@ private:
 
     Config *conf;
     std::default_random_engine generator;
-    std::vector<double> parA;
-    std::vector<double> parB;
+    std::vector<double> s_parA;
+    std::vector<double> s_parB;
     std::deque<double> u;
     std::deque<double> y;
 

@@ -5,13 +5,12 @@
 #include <string>
 #include <random>
 
-class configRegulatorParameters;
+//class configRegulatorParameters;
 class Signal;
 
 class Generator
 {
 public:
-    Generator();
     Generator(string filePath);
     configRegulatorParameters *crp;
     bool RegisterSignal (Signal * signal);

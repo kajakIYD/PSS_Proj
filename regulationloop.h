@@ -24,7 +24,7 @@ public:
      * Generator -  pointer to generator that generates set point value
      * QString - current regulator type
      */
-    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, QString currentRegType="P");
+    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, QString currentRegType="PID");
     /*!
      * \brief Destructor
      */

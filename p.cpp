@@ -1,10 +1,5 @@
 #include "p.h"
 
-P::P()
-{
-
-}
-
 P::P(double kr, Generator *generator)
 {
     this->kr = kr;

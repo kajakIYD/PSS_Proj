@@ -31,6 +31,31 @@ PlotDelegate::PlotDelegate(Ui::MainWindow* ui, QMainWindow* mw)
 }
 
 
+void PlotDelegate::Update(double u, double y, double SP)
+{
+    time++;
+    t.push_back(time);
+    this->u.push_back(u);
+    this->y.push_back(y);
+    this->SP.push_back(SP);
+    this->ui->Plot1->graph(0)->setData(this->t,this->y);
+    this->ui->Plot1->graph(1)->setData(this->t,this->SP);
+    this->ui->Plot2->graph(0)->setData(this->t,this->u);
+    this->ui->Plot1->yAxis->rescale();
+
+    if (t.size()>50)
+    {
+        this->ui->Plot1->xAxis->setRange(t.size()-50, t.size());
+        this->ui->Plot2->xAxis->setRange(t.size()-50, t.size());
+    }
+
+    this->ui->Plot1->replot();
+    this->ui->Plot2->yAxis->rescale();
+
+    this->ui->Plot2->replot();
+    return;
+}
+
 void PlotDelegate::Update(double u, double y)
 {
     time++;

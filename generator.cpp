@@ -5,13 +5,9 @@ Generator::Generator(string filePath)
     this->crp = new configRegulatorParameters(filePath);
 }
 
-Generator::Generator()
+//
+bool Generator::RegisterSignal(Signal * signal)
 {
-
-}
-
-
-bool Generator::RegisterSignal(Signal * signal) {
     if (std::find(s_Signals.begin(), s_Signals.end(), signal) == s_Signals.end()) {
         s_Signals.push_back(signal);
         return true;

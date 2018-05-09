@@ -20,6 +20,12 @@ public:
      * perform one simulation step
      * double input -
      */
+    virtual void Update(double y1, double y2, double y3) = 0;
+    /*!
+     * \brief simulate_step
+     * perform one simulation step
+     * double input -
+     */
     virtual void Update(double x, double y) = 0;
     /*!
      * \brief simulate_step

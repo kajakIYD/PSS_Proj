@@ -21,6 +21,14 @@ bool Subject::UnregisterObserver(Observer * observer) {
         return false;
 }
 
+
+void Subject::Notify (double u, double y, double SP) const {
+    std::list<Observer *>::const_iterator it = s_Observers.begin();
+    for (; it != s_Observers.end(); ++it) {
+            (*it)->Update(u, y, SP);
+    }
+}
+
 void Subject::Notify (double u, double y) const {
     std::list<Observer *>::const_iterator it = s_Observers.begin();
     for (; it != s_Observers.end(); ++it) {

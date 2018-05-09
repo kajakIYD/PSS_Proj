@@ -28,6 +28,9 @@ MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, Q
     ui->w_changeTd->setValue(s_conf->Td);
     ui->w_changeN->setValue(s_conf->N);
     ui->w_changeb->setValue(s_conf->b);
+    ui->w_changeH->setValue(s_conf->H);
+    ui->w_changeL->setValue(s_conf->L);
+    ui->w_changeAlpha->setValue(s_conf->Alpha);
     ui->w_changeMax_u->setValue(conf->max_u);
     ui->w_changeMin_u->setValue(conf->min_u);
 
@@ -94,7 +97,7 @@ void MainWindow::updateView()
 
             currentOutput = s_regLoop -> Simulate_step(currentOutput);
         }
-        PlotSP();
+        //PlotSP();
         MainWindow::time++;
         s_regLoop->time = time;
     }
@@ -113,7 +116,7 @@ void MainWindow::updateViewStep()
         ui->Plot1->replot();
     }
     currentOutput = s_regLoop -> Simulate_step(currentOutput);
-    PlotSP();
+    //PlotSP();
     MainWindow::time++;
     s_regLoop->time = MainWindow::time;
 }

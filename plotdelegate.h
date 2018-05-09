@@ -24,6 +24,12 @@ public:
      * perform one simulation step
      * double input -
      */
+    virtual void Update(double u, double y, double SP);
+    /*!
+     * \brief simulate_step
+     * perform one simulation step
+     * double input -
+     */
     virtual void Update(double u, double y);
     /*!
      * \brief simulate_step
@@ -38,6 +44,7 @@ private:
     QVector<double> t={};
     QVector<double> y={};
     QVector<double> u={};
+    QVector<double> SP={};
 };
 
 #endif // PLOTDELEGATE_H

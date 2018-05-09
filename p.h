@@ -13,11 +13,12 @@ public:
     /*!
      * \brief Constructor
      */
-    P();
+    P(){}
     /*!
      * \brief Destructor
      */
     ~P();
+    void Update(double x, double y, double z){}
     void Update(double x, double y){}
     void Update(double y);
     //    void SetSP(double SP);

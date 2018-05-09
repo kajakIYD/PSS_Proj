@@ -36,7 +36,7 @@ private:
     std::vector<double> phi ={};
 
     //Vector of vectors P with initial condition set in constructor
-    std::vector<std::vector<double>> P ={};
+    std::vector<std::vector<double>> s_P ={};
     //Biblioteka
 };
 

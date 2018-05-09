@@ -41,7 +41,7 @@ SOURCES += \
     regulationloop.cpp \
     pid.cpp \
     identify.cpp \
-    setpointplot.cpp
+    gpc.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -60,7 +60,7 @@ HEADERS += \
     regulationloop.h \
     pid.h \
     identify.h \
-    setpointplot.h
+    gpc.h
 
 FORMS += \
         mainwindow.ui

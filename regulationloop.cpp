@@ -38,7 +38,7 @@ double RegulationLoop::GetSP()
 
 void RegulationLoop::UpdatePlot()
 {
-    Notify(s_input, s_output);
+    Notify(s_input, s_output, s_reg->GetSP());
 }
 
 void RegulationLoop::SaveToFile()
@@ -55,7 +55,7 @@ void RegulationLoop::SaveToFile()
 
 
 //instead of multiple parameters use map, check exceptions
-void RegulationLoop::ChangeRegParameters(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, double alpha/*and so on?...*/)
+void RegulationLoop::ChangeRegParameters(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, double H, double L, double alpha/*and so on?...*/)
 {
     //Determine type of regulator
 
@@ -69,14 +69,16 @@ void RegulationLoop::ChangeRegParameters(double kr, double Ti, double Td, double
        delete s_reg;
        s_reg = new PID(kr, Ti, Td, N, b, max_u, min_u, s_generator);
     }
-   //Other regulators in the same way?
+    if (s_currentRegType=="GPC")
+    {
+       delete s_reg;
+       //s_reg = new PID(kr, Ti, Td, N, b, max_u, min_u, s_generator);
+    }
+   //Other regulators in the same way
 }
 
 void RegulationLoop::ChangeRegulator(QString s)
 {
-    //1. create regulator to temp
-    //2. check ifs
-    //3. delete old
     Regulator *tempReg;;
     tempReg = nullptr;
     s_currentRegType = s;
@@ -90,7 +92,7 @@ void RegulationLoop::ChangeRegulator(QString s)
     }
     if (s == "PID")
     {
-        //tempReg = new  PID;
+        tempReg = new  PID;
     }
     if (s == "GPC")
     {

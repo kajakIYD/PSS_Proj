@@ -24,6 +24,7 @@ public:
      * perform one simulation step
      * give an output depending on input
      */
+    virtual void Update(double u, double y, double z)=0;
     virtual void Update(double u, double y)=0;
     virtual void Update(double y)=0;
     virtual double Simulate_step(double input)=0;
