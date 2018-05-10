@@ -23,6 +23,10 @@ public:
     double b;
     double max_u;
     double min_u;
+    double H;
+    double L;
+    double alpha;
+    double ro;
 private:
     bool LoadValues(const char* filePath);
     int ExtractTime(std::string str);

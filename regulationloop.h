@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include "p.h"
 #include "pid.h"
+#include "gpc.h"
 #include "generator.h"
 #include <QString>
 
@@ -24,7 +25,7 @@ public:
      * Generator -  pointer to generator that generates set point value
      * QString - current regulator type
      */
-    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, QString currentRegType="PID");
+    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO* paralel_Siso, QString currentRegType="PID");
     /*!
      * \brief Destructor
      */
@@ -55,12 +56,16 @@ public:
      */
     double GetSP();
     /*!
+     * \brief Simple getter of an simulation output vector
+     */
+    std::vector<double> GetYVector();
+    /*!
      * \brief Method that allows to change regulator parameters,
      * naturally depending on regulator type
      * kr - gain, Ti - integration time, Td-derivation time
      * alpha -GPC regulator parameter
      */
-    void ChangeRegParameters(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, double alpha);
+    void ChangeRegParameters(double kr, double Ti, double Td, double N, double b, double max_u, double min_u, double alpha, double H, double L, double ro);
     /*!
      * \brief Method that allows to change regulator type
      * QString - value from GUI, name of proper regulator
@@ -74,12 +79,14 @@ public:
 private:
     Regulator *s_reg;
     SISO *s_siso;
+    SISO *s_paralelSiso;
     Generator *s_generator;
 
     double s_output;
     double s_input;
     std::fstream s_file;
     QString s_currentRegType = "PID";
+    std::vector<double> s_y;
 };
 
 #endif // REGULATIONLOOP_H

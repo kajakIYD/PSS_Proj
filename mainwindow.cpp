@@ -2,17 +2,18 @@
 #include "ui_mainwindow.h"
 
 
-MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, QWidget *parent) :
+MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, ARX *paralelArx, QWidget *parent) :
     s_arx(arx),
     s_pid(pid),
     s_generator(generator),
     s_conf(conf),
+    s_paralelArx(paralelArx),
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    s_regLoop = new RegulationLoop(s_arx, s_pid, s_generator, "PID");
+    s_regLoop = new RegulationLoop(s_arx, s_pid, s_generator, s_paralelArx, "PID");
 
     s_plot1Delegate = new PlotDelegate(ui, this);
     s_plot2Delegate = new PlotDelegate(ui, this);
@@ -30,7 +31,8 @@ MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, Q
     ui->w_changeb->setValue(s_conf->b);
     ui->w_changeH->setValue(s_conf->H);
     ui->w_changeL->setValue(s_conf->L);
-    ui->w_changeAlpha->setValue(s_conf->Alpha);
+    ui->w_changeAlpha->setValue(s_conf->alpha);
+    ui->w_changeRo->setValue(s_conf->ro);
     ui->w_changeMax_u->setValue(conf->max_u);
     ui->w_changeMin_u->setValue(conf->min_u);
 
@@ -76,10 +78,14 @@ void MainWindow::updateView()
     //s_p->time=time;
 
     if (MainWindow::time>s_arx->GetSwitchTime())
+    {
         s_arx->UpdateParameters();
+        s_paralelArx->UpdateParameters();
+    }
     if (restarted)
     {
         s_arx->ResetParameters();
+        s_paralelArx->ResetParameters();
         restarted = false;
         ui->Plot1->yAxis->setRange(-10, 10);
         ui->Plot1->replot();
@@ -89,7 +95,7 @@ void MainWindow::updateView()
         if (MainWindow::time ==0)
         {
             currentOutput=s_arx->Simulate_step(0);
-            //s_p->Simulate_step(0);
+            s_paralelArx->Simulate_step(0);
         }
         else
         {
@@ -215,7 +221,9 @@ void MainWindow::on_addNoise_clicked(bool checked)
 void MainWindow::on_changeRegulatorParametersButton_clicked(bool checked)
 {
     timer->start(10000);
-    s_regLoop->ChangeRegParameters(ui->w_changeKr->value(),ui->w_changeTi->value(),ui->w_changeTd->value(), ui->w_changeN->value(), ui->w_changeb->value(), ui->w_changeMax_u->value(), ui->w_changeMin_u->value(), 0);
+    s_regLoop->ChangeRegParameters(ui->w_changeKr->value(),ui->w_changeTi->value(),ui->w_changeTd->value(),
+                                   ui->w_changeN->value(), ui->w_changeb->value(), ui->w_changeMax_u->value(),
+                                   ui->w_changeMin_u->value(), ui->w_changeAlpha->value(), ui->w_changeH->value(), ui->w_changeL->value(), ui->w_changeRo->value());
     timer->start(1000);
 }
 
@@ -227,6 +235,7 @@ void MainWindow::on_changeRegulatorButton_clicked(bool checked)
     try
     {
         s_regLoop->ChangeRegulator(ui->regType->currentText());
+        on_changeRegulatorParametersButton_clicked(true);
         ui->currentRegulator->setText(ui->regType->currentText());
     }
     catch (...)
@@ -239,6 +248,7 @@ void MainWindow::on_changeRegulatorButton_clicked(bool checked)
 void MainWindow::on_restartButton_clicked(bool checked)
 {
     ARX *arx = new ARX;
+    ARX *paralelArx = new ARX;
     Config *conf = new Config("E:\\Qt\\Projects\\PSS_New\\PSS\\Config\\PSS_Config.xml");
     Generator *generator = new Generator("E:\\Qt\\Projects\\PSS_New\\PSS\\Config\\PSS2_Config.xml");
     PID *pid = new PID(conf->kr, conf->Ti, conf->Td, conf->N, conf->b, conf->max_u, conf->min_u, generator);
@@ -246,7 +256,7 @@ void MainWindow::on_restartButton_clicked(bool checked)
     //    delete s_conf;
     //    delete s_generator;
     //    delete s_pid;
-    MainWindow(arx, pid, generator, conf);
+    MainWindow(arx, pid, generator, conf, paralelArx);
     MainWindow::time = 0;
     restarted = true;
 }

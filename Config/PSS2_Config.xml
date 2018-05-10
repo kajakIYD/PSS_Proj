@@ -1,3 +1,4 @@
 <step><value>5</value></step>
-<triangle><value>31</value></triangle>
-<noise><value>10</value></noise>
+<step><value>5</value></step>
+<rectangle><value>50</value></rectangle>
+<step><value>5</value></step>

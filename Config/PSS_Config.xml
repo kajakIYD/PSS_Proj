@@ -59,4 +59,19 @@
 	<value> 0 </value>
 	</min_u>
 	
+	<H>
+	<value> 3 </value>
+	</H>
+	
+	<L>
+	<value> 2 </value>
+	</L>
+	
+	<ro>
+	<value> 2 </value>
+	</ro>
+	
+	<alpha>
+	<value> 0.8 </value>
+	</alpha>
 </PSS_Config>

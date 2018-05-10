@@ -43,6 +43,17 @@ void ARX::ResetParameters()
     s_parB = conf->B;
 }
 
+std::vector<double> ARX::GetA()
+{
+    return s_parA;
+}
+
+std::vector<double> ARX::GetB()
+{
+    return s_parB;
+}
+
+
 
 int ARX::GetSwitchTime()
 {
@@ -97,4 +108,26 @@ double ARX::Simulate_step(double input)
     //Notify(output);
 
     return output;
+}
+
+std::deque<double> ARX::GetY()
+{
+    return y;
+}
+
+
+std::deque<double> ARX::GetU()
+{
+    return u;
+}
+
+void ARX::SetY(std::deque<double> yNew)
+{
+    this->y = yNew;
+}
+
+
+void ARX::SetU(std::deque<double> uNew)
+{
+    this->u = uNew;
 }

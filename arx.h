@@ -33,10 +33,39 @@ public:
     void UpdateParameters();
 
     /*!
-     * \brief UpdateParameters();
-     * Used for reseting parameters of arx object during simulation
+     * \brief Used for reseting parameters of arx object during simulation
      */
     void ResetParameters();
+
+    /*!
+     * \brief Getter used for acuiring A vector
+     */
+    std::vector<double> GetA();
+
+    /*!
+     * \brief Getter used for acquireing B vector
+     */
+    std::vector<double> GetB();
+
+    /*!
+     * \brief Getter used for acquireing Y vector
+     */
+    std::deque<double> GetY();
+
+    /*!
+     * \brief Getter used for acquireing U vector
+     */
+    std::deque<double> GetU();
+
+    /*!
+     * \brief Setter used for acquireing U vector
+     */
+    void SetY(std::deque<double> yNew);
+
+    /*!
+     * \brief Setter used for acquireing U vector
+     */
+    void SetU(std::deque<double> uNew);
 
     /*!
      * \brief public_U
@@ -44,6 +73,7 @@ public:
      * make it private and add method that allow to set that value
      */
     double public_U=0;
+
 
 private:
 

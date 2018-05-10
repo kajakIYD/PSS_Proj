@@ -149,6 +149,50 @@ bool Config::LoadValues(const char* filePath)
                             reader.skipCurrentElement();
                     }
                 }
+                else if(reader.name() == "H"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            this->H = string_to_double(str);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
+                else if(reader.name() == "L"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            this->L = string_to_double(str);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
+                else if(reader.name() == "ro"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            this->ro = string_to_double(str);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
+                else if(reader.name() == "alpha"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            this->alpha = string_to_double(str);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
                 else if(reader.name() == "b_Parameters"){
                     while(reader.readNextStartElement()){
                         if(reader.name() == "value"){

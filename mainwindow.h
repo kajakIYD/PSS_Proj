@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow
 public:
 
     explicit MainWindow(QWidget *parent = 0);
-    explicit MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, QWidget *parent=0);
+    explicit MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, ARX *paralelArx, QWidget *parent=0);
     ~MainWindow();
 
 private slots:
@@ -55,6 +55,7 @@ private:
     Ui::MainWindow *ui;
 
     ARX *s_arx;
+    ARX *s_paralelArx;
     Config *s_conf;
     Generator *s_generator;
     QTimer *timer;
