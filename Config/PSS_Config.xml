@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PSS_Config>
+	<file_comment>
+	Configuration file containing information about ARX object
+	</file_comment>
+	
+	<delay>
+    <value>1</value>
+    <description>
+	JustDelay
+	</description>
+	</delay>
+	
+	<b_Parameters>
+	<description>
+	JustBParams
+	</description>
+	<value>0.15</value>
+	<valueN>0.2</valueN>
+	</b_Parameters>
+	
+	<a_Parameters>
+	<description>
+	JustAParams
+	</description>
+	<value>0.1</value>
+	<valueN>0.2</valueN>
+	</a_Parameters>
+	
+	<switch_time>
+	<value> 500 </value>
+	</switch_time>
+	
+	<kr>
+	<value> 1 </value>
+	</kr>
+	
+	<Ti>
+	<value> 1 </value>
+	</Ti>
+	
+	<Td>
+	<value> 1 </value>
+	</Td>
+
+	<N>
+	<value> 20 </value>
+	</N>
+	
+	<b>
+	<value> 1 </value>
+	</b>
+	
+	<max_u>
+	<value> 100 </value>
+	</max_u>
+	
+	<min_u>
+	<value> 0 </value>
+	</min_u>
+	
+	<H>
+	<value> 3 </value>
+	</H>
+	
+	<L>
+	<value> 2 </value>
+	</L>
+	
+	<ro>
+	<value> 2 </value>
+	</ro>
+	
+	<alpha>
+	<value> 0.8 </value>
+	</alpha>
+</PSS_Config>
