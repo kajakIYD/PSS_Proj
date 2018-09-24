@@ -292,18 +292,75 @@ void MainWindow::on_changeRegulatorButton_clicked(bool checked)
 
 void MainWindow::on_restartButton_clicked(bool checked)
 {
-    ARX *arx = new ARX;
-    ARX *paralelArx = new ARX;
-    Config *conf = new Config("C:\\!Maciej Kusnierz\\QtCreator\\moje\\PSS_GPC2\\Config\\PSS_Config.xml");
-    Generator *generator = new Generator("C:\\!Maciej Kusnierz\\QtCreator\\moje\\PSS_GPC2\\Config\\PSS2_Config.xml");
-    PID *pid = new PID(conf->kr, conf->Ti, conf->Td, conf->N, conf->b, conf->max_u, conf->min_u, generator);
-    //    delete s_arx;
-    //    delete s_conf;
-    //    delete s_generator;
-    //    delete s_pid;
-    MainWindow(arx, pid, generator, conf, paralelArx);
+    delete s_arx;
+    delete s_conf;
+    delete s_generator;
+    delete s_pid;
+    s_arx = new ARX();
+    s_paralelArx = new ARX();
+    s_conf = new Config("E:\\Polibuda\\!VIII Sem\\PSS\\Laboratorium\\PSS_Proj\\Config\\PSS_Config.xml");
+    s_generator = new Generator("E:\\Polibuda\\!VIII Sem\PSS\\Laboratorium\\PSS_Proj\\Config\\PSS2_Config.xml");
+    s_pid =  new PID(s_conf->kr, s_conf->Ti, s_conf->Td, s_conf->N, s_conf->b, s_conf->max_u, s_conf->min_u, s_generator);
+
+    s_regLoop->UnregisterObserver(s_plot3Delegate);
+    //MainWindow(s_arx, s_pid, s_generator, s_conf, s_paralelArx);
+    ui->setupUi(this);
+
+
+
+    s_dA = s_arx->GetAdegree();
+    s_dB = s_arx->GetBdegree();
+    int k = s_arx->Getk();
+
+    delete s_id;
+    s_id = new Identify(s_dA,s_dB,k);
+    //delete s_regLoop;
+    s_regLoop = new RegulationLoop(s_arx, s_pid, s_generator, s_paralelArx, s_id, "PID" );
+
+
+    delete s_plot1Delegate;
+    s_plot1Delegate = new PlotDelegate(ui, this);
+    delete s_plot2Delegate;
+    s_plot2Delegate = new PlotDelegate(ui, this);
+    delete s_plot3Delegate;
+    s_plot3Delegate = new PlotDelegate(ui, this);
+
+
+    s_arx->RegisterObserver(s_plot1Delegate);
+    //s_arx->RegisterObserver(s_p);
+    s_regLoop->RegisterObserver(s_plot3Delegate);
+
+    ui->w_changeKr->setValue(s_conf->kr);
+    ui->w_changeTi->setValue(s_conf->Ti);
+    ui->w_changeTd->setValue(s_conf->Td);
+    ui->w_changeN->setValue(s_conf->N);
+    ui->w_changeb->setValue(s_conf->b);
+    ui->w_changeH->setValue(s_conf->H);
+    ui->w_changeL->setValue(s_conf->L);
+    ui->w_changeAlpha->setValue(s_conf->alpha);
+    ui->w_changeRo->setValue(s_conf->ro);
+    ui->w_changeMax_u->setValue(s_conf->max_u);
+    ui->w_changeMin_u->setValue(s_conf->min_u);
     MainWindow::time = 0;
     restarted = true;
+    delete this->timer;
+    this->timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateView()));
+    timer->start(1000);
+    connect(ui->startButton, SIGNAL(clicked(bool)), this, SLOT(on_startButton_clicked(bool)));
+    connect(ui->stepButton, SIGNAL(clicked(bool)), this, SLOT(on_stepButton_clicked(bool)));
+    connect(ui->stopButton, SIGNAL(clicked(bool)), this, SLOT(on_stopButton_clicked(bool)));
+    connect(ui->addStep, SIGNAL(clicked(bool)), this, SLOT(on_addStep_clicked()));
+    connect(ui->addRectangle, SIGNAL(clicked(bool)), this, SLOT(on_addRectangle_clicked()));
+    connect(ui->addSine, SIGNAL(clicked(bool)), this, SLOT(on_addSine_clicked()));
+    connect(ui->addTriangle, SIGNAL(clicked(bool)), this, SLOT(on_addTriangle_clicked()));
+    connect(ui->addNoise, SIGNAL(clicked(bool)), this, SLOT(on_addNoise_clicked(bool)));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(on_horizontalSlider_valueChanged(int)));
+    //connect(ui->w_changeKr, SIGNAL(valueChanged(double)), this, SLOT(on_w_changeKr_valueChanged(double)));
+    connect(ui->changeRegulatorButton, SIGNAL(clicked(bool)), this, SLOT(on_changeRegulatorButton_clicked(bool)));
+    connect(ui->changeRegulatorParametersButton, SIGNAL(clicked(bool)), this, SLOT(on_changeRegulatorParametersButton_clicked(bool)));
+    connect(ui->restartButton, SIGNAL(clicked(bool)), this, SLOT(on_restartButton_clicked(bool)));
+    connect(ui->resetSetPoint, SIGNAL(clicked(bool)), this, SLOT(on_resetSetPoint_clicked(bool)));
 }
 
 void MainWindow::on_resetSetPoint_clicked(bool checked)
