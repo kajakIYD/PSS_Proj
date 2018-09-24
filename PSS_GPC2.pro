@@ -67,3 +67,9 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+
+DISTFILES += \
+    GPC_Logo.png
+
+RESOURCES += \
+    resources.qrc
