@@ -3,7 +3,7 @@
 ARX::ARX()
 {
     //destrctor and make it aggregation(outside of that class, in mw)
-    this->conf = new Config("C:\\!Maciej Kusnierz\\QtCreator\\moje\\PSS_GPC2\\Config\\PSS_Config.xml");
+    this->conf = new Config(PUT_PATH_HERE);
 
     s_parA = conf->A;
     s_parB = conf->B;
