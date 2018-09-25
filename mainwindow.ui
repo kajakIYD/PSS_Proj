@@ -49,6 +49,12 @@ QTabBar::tab:hover
      <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
+     <property name="styleSheet">
+      <string notr="true">QWidget
+{
+	background: rgb(208, 241, 255);
+}</string>
+     </property>
      <attribute name="title">
       <string>Simulation</string>
      </attribute>
@@ -217,6 +223,12 @@ QTabBar::tab:hover
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
+     <property name="styleSheet">
+      <string notr="true">QWidget
+{
+	background: rgb(208, 241, 255);
+}</string>
+     </property>
      <attribute name="title">
       <string>Regulator</string>
      </attribute>
@@ -1118,6 +1130,12 @@ QTabBar::tab:hover
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
+     <property name="styleSheet">
+      <string notr="true">QWidget
+{
+	background: rgb(208, 241, 255);
+}</string>
+     </property>
      <attribute name="title">
       <string>Config</string>
      </attribute>
