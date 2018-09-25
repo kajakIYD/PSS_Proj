@@ -68,7 +68,7 @@ QTabBar::tab:hover
        </rect>
       </property>
       <property name="text">
-       <string>Krok</string>
+       <string>Step</string>
       </property>
      </widget>
      <widget class="QPushButton" name="startButton">
