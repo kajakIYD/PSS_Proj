@@ -1,5 +1,5 @@
-#ifndef ARX_H
-#define ARX_H
+#ifndef ARMAX_H
+#define ARMAX_H
 
 #include <deque>
 #include <vector>
@@ -9,11 +9,11 @@
 #include "subject.h"
 #include "config.h"
 
-class ARX : public SISO, public Subject
+class ARMAX : public SISO, public Subject
 {
 public:
-    ARX();
-    ~ARX();
+    ARMAX();
+    ~ARMAX();
 
     /*!
      * \brief simulate_step
@@ -53,10 +53,11 @@ public:
      * \brief Getter used for acquireing B vector
      */
     std::vector<double> GetB();
-
     /*!
-     * \brief Getter used for acquireing B vector
+     * \brief Getter used for acquireing C vector
      */
+    std::vector<double> GetC();
+
 
     /*!
      * \brief Getter used for acquireing A degree
@@ -67,6 +68,11 @@ public:
      * \brief Getter used for acquireing B degree
      */
     int GetBdegree();
+
+    /*!
+     * \brief Getter used for acquireing B degree
+     */
+    int GetCdegree();
 
     /*!
      * \brief Getter used for acquireing k parameter
@@ -112,14 +118,18 @@ private:
     std::default_random_engine generator;
     std::vector<double> s_parA;
     std::vector<double> s_parB;
+    std::vector<double> s_parC;
     std::vector<double> s_changes_parA;
     std::vector<double> s_changes_parB;
+    std::vector<double> s_changes_parC;
     std::deque<double> u;
     std::deque<double> y;
     std::deque<double> yFromBeginning;
+    std::deque<double> e;
 
     int s_dA;
     int s_dB;
+    int s_dC;
     int s_k;
     int s_time = 0;
     int s_switchTime=0;
@@ -129,4 +139,5 @@ private:
     void CalculateParamChanges();
 };
 
-#endif // ARX_H
+
+#endif // ARMAX_H

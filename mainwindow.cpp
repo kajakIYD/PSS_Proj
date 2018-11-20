@@ -2,25 +2,85 @@
 #include "ui_mainwindow.h"
 
 
-MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, ARX *paralelArx, QWidget *parent) :
-    s_arx(arx),
+//MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, ARX *paralelArx, QWidget *parent) :
+//    s_arx(arx),
+//    s_pid(pid),
+//    s_generator(generator),
+//    s_conf(conf),
+//    s_paralelArx(paralelArx),
+//    QMainWindow(parent),
+//    ui(new Ui::MainWindow)
+//{
+//    ui->setupUi(this);
+
+
+
+//    s_dA = s_arx->GetAdegree();
+//    s_dB = s_arx->GetBdegree();
+//    int k = s_arx->Getk();
+
+//    s_id = new Identify(s_dA,s_dB,k);
+//    s_regLoop = new RegulationLoop(s_arx, s_pid, s_generator, s_paralelArx, s_id, "PID" );
+
+
+//    s_plot1Delegate = new PlotDelegate(ui, this);
+//    s_plot2Delegate = new PlotDelegate(ui, this);
+//    s_plot3Delegate = new PlotDelegate(ui, this);
+
+
+//    s_arx->RegisterObserver(s_plot1Delegate);
+//    //s_arx->RegisterObserver(s_p);
+//    s_regLoop->RegisterObserver(s_plot3Delegate);
+
+//    ui->w_changeKr->setValue(s_conf->kr);
+//    ui->w_changeTi->setValue(s_conf->Ti);
+//    ui->w_changeTd->setValue(s_conf->Td);
+//    ui->w_changeN->setValue(s_conf->N);
+//    ui->w_changeb->setValue(s_conf->b);
+//    ui->w_changeH->setValue(s_conf->H);
+//    ui->w_changeL->setValue(s_conf->L);
+//    ui->w_changeAlpha->setValue(s_conf->alpha);
+//    ui->w_changeRo->setValue(s_conf->ro);
+//    ui->w_changeMax_u->setValue(conf->max_u);
+//    ui->w_changeMin_u->setValue(conf->min_u);
+
+//    this->timer = new QTimer(this);
+//    connect(timer, SIGNAL(timeout()), this, SLOT(updateView()));
+//    timer->start(1000);
+//    connect(ui->startButton, SIGNAL(clicked(bool)), this, SLOT(on_startButton_clicked(bool)));
+//    connect(ui->stepButton, SIGNAL(clicked(bool)), this, SLOT(on_stepButton_clicked(bool)));
+//    connect(ui->stopButton, SIGNAL(clicked(bool)), this, SLOT(on_stopButton_clicked(bool)));
+//    connect(ui->addStep, SIGNAL(clicked(bool)), this, SLOT(on_addStep_clicked()));
+//    connect(ui->addRectangle, SIGNAL(clicked(bool)), this, SLOT(on_addRectangle_clicked()));
+//    connect(ui->addSine, SIGNAL(clicked(bool)), this, SLOT(on_addSine_clicked()));
+//    connect(ui->addTriangle, SIGNAL(clicked(bool)), this, SLOT(on_addTriangle_clicked()));
+//    connect(ui->addNoise, SIGNAL(clicked(bool)), this, SLOT(on_addNoise_clicked(bool)));
+//    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(on_horizontalSlider_valueChanged(int)));
+//    //connect(ui->w_changeKr, SIGNAL(valueChanged(double)), this, SLOT(on_w_changeKr_valueChanged(double)));
+//    connect(ui->changeRegulatorButton, SIGNAL(clicked(bool)), this, SLOT(on_changeRegulatorButton_clicked(bool)));
+//    connect(ui->changeRegulatorParametersButton, SIGNAL(clicked(bool)), this, SLOT(on_changeRegulatorParametersButton_clicked(bool)));
+//    connect(ui->restartButton, SIGNAL(clicked(bool)), this, SLOT(on_restartButton_clicked(bool)));
+//    connect(ui->resetSetPoint, SIGNAL(clicked(bool)), this, SLOT(on_resetSetPoint_clicked(bool)));
+//}
+
+MainWindow::MainWindow(ARMAX *armax, PID *pid, Generator *generator, Config *conf, ARMAX *paralelArmax, QWidget *parent) :
+    s_armax(armax),
     s_pid(pid),
     s_generator(generator),
     s_conf(conf),
-    s_paralelArx(paralelArx),
+    s_paralelArmax(paralelArmax),
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-
-
-    s_dA = s_arx->GetAdegree();
-    s_dB = s_arx->GetBdegree();
+    s_dA = s_armax->GetAdegree();
+    s_dB = s_armax->GetBdegree();
+    s_dC = s_armax->GetCdegree();
     int k = s_arx->Getk();
 
-    s_id = new Identify(s_dA,s_dB,k);
-    s_regLoop = new RegulationLoop(s_arx, s_pid, s_generator, s_paralelArx, s_id, "PID" );
+    s_id = new IdentifyARMAX(s_dA, s_dB, s_dC, k);
+    s_regLoop = new RegulationLoop(s_armax, s_pid, s_generator, s_paralelArmax, s_id, "PID" );
 
 
     s_plot1Delegate = new PlotDelegate(ui, this);
@@ -28,7 +88,7 @@ MainWindow::MainWindow(ARX *arx, PID *pid, Generator *generator, Config *conf, A
     s_plot3Delegate = new PlotDelegate(ui, this);
 
 
-    s_arx->RegisterObserver(s_plot1Delegate);
+    s_armax->RegisterObserver(s_plot1Delegate);
     //s_arx->RegisterObserver(s_p);
     s_regLoop->RegisterObserver(s_plot3Delegate);
 
@@ -117,6 +177,7 @@ void MainWindow::updateView()
             s_id->Identify_step(U[0],Y[0]);
             A = s_id->Get_A();
             B = s_id->Get_B();
+            //if s_id jest rozszerzona to Get_C
 
             theta = s_id->Get_param();
         }
@@ -180,6 +241,13 @@ void MainWindow::PlotSP()
 void MainWindow::DisplayIdentParams()
 {
     QString idParams = "";
+    //if s_id jest rozszerzona to:
+//    for (int i=0; i<=s_dC = s_dB + s_dA; i++)
+//    {
+//        idParams = idParams.append(stringToQString(doubleToString(theta.at(i))) + " ");
+//    }
+//    ui->textBrowser_B_ident_coeffs->setText(idParams);
+//    idParams = "";
     for (int i=0; i<=s_dB;i++)
     {
         idParams = idParams.append(stringToQString(doubleToString(theta.at(i))) + " ");
@@ -195,18 +263,24 @@ void MainWindow::DisplayIdentParams()
 
 void MainWindow::DisplayRealParams()
 {
-    QString idParams = "";
+    QString realParams = "";
     for (int i=0; i < s_dA;i++)
     {
-        idParams = idParams.append(stringToQString(doubleToString(s_arx->GetA().at(i))) + " ");
+        realParams = realParams.append(stringToQString(doubleToString(s_arx->GetA().at(i))) + " ");
     }
-    ui->textBrowser_A_real_coeffs->setText(idParams);
-    idParams = "";
+    ui->textBrowser_A_real_coeffs->setText(realParams);
+    realParams = "";
     for (int i=0; i <= s_dB;i++)
     {
-        idParams = idParams.append(stringToQString(doubleToString(s_arx->GetB().at(i))) + " ");
+        realParams = realParams.append(stringToQString(doubleToString(s_arx->GetB().at(i))) + " ");
     }
-    ui->textBrowser_B_real_coeffs->setText(idParams);
+    ui->textBrowser_B_real_coeffs->setText(realParams);
+//    realParams = "";
+//    for (int i=0; i <= s_dC;i++)
+//    {
+//        realParams = realParams.append(stringToQString(doubleToString(s_arx->GetC().at(i))) + " ");
+//    }
+//    ui->textBrowser_C_real_coeffs->setText(realParams);
 }
 
 

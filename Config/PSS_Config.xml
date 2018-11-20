@@ -11,6 +11,15 @@
 	</description>
 	</delay>
 	
+	<c_Parameters>
+	<description>
+	JustCParams
+	</description>
+	<value>0.1 0.01</value>
+	<valueN>0.2</valueN>
+	</c_Parameters>
+	
+	
 	<b_Parameters>
 	<description>
 	JustBParams

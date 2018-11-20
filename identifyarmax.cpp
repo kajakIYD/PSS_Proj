@@ -1,8 +1,9 @@
-#include "identify.h"
+#include "identifyarmax.h"
 
-Identify::Identify(int dA, int dB, int k):
+IdentifyARMAX::Identify(int dA, int dB, int dC, int k):
 s_dA(dA),
 s_dB(dB),
+s_dC(dC),
 s_k(k)
 {
     // lambda 1 - metoda bez ważenia (w przypadku o. stacj. ustawia się mniej np. 0.99
@@ -14,7 +15,7 @@ s_k(k)
 
 }
 
-void Identify::Identify_step(double new_u, double new_y)
+void IdentifyARMAX::Identify_step(double new_u, double new_y)
 {
 
     // krok 1 aktualizacja wektora danych
@@ -24,6 +25,11 @@ void Identify::Identify_step(double new_u, double new_y)
 
     y.push_front(new_y);
     y.pop_back();
+
+    double e_dashed_current = new_y - phi.transpose() * theta;
+
+    e_dashed.push_front(e_dashed_current);
+    e_dashed.pop_back();
 
     // krok 2 wyznaczenie nowego phi
 
@@ -44,6 +50,15 @@ void Identify::Identify_step(double new_u, double new_y)
     {
         std::vector<double> temp;
         phi(phi_it,0) = (-(*it));
+        phi_it++;
+    }
+
+    it = e_dashed.begin();
+    advance(it, 1);
+    for(it; it != e_dashed.end(); ++it)
+    {
+        std::vector<double> temp;
+        phi(phi_it, 0) = (*it);
         phi_it++;
     }
 
@@ -78,7 +93,7 @@ void Identify::Identify_step(double new_u, double new_y)
 
 }
 
-deque<double> Identify::Get_param()
+deque<double> IdentifyARMAX::Get_param()
 {
     deque<double> tmp;
     for(int i=0; i < s_dA+s_dB+1; i++)
@@ -88,14 +103,14 @@ deque<double> Identify::Get_param()
     return tmp;
 }
 
-vector<double> Identify::Get_A()
+vector<double> IdentifyARMAX::Get_A()
 {   A.clear();
     for(int i=s_dB+1; i<s_dA+s_dB+1; i++)
         A.push_back(theta(i,0));
     return A;
 }
 
-vector<double> Identify::Get_B()
+vector<double> IdentifyARMAX::Get_B()
 {
     B.clear();
     for(int i=0; i<s_dB+1; i++)
@@ -103,14 +118,15 @@ vector<double> Identify::Get_B()
     return B;
 }
 
-std::vector<double> Identify::Get_C()
+vector<double> IdentifyARMAX::Get_C()
 {
-    std::vector<double> a;
-    return a;
+    C.clear();
+    for(int i=0; i<s_dC+1; i++)
+        C.push_back(theta(i,0));
+    return C;
 }
 
-
-void Identify::Identify_initialization()
+void IdentifyARMAX::Identify_initialization()
 {
     // input
     for(int i=0; i < (s_dB+s_k+1); i++)
@@ -120,15 +136,22 @@ void Identify::Identify_initialization()
     for(int i=0; i < (s_dA+1); i++)
         y.push_back(0.0);
 
-    // A and B
+    //estimated e
+    for(int i=0; i < s_dC; i++)
+        e_dashed.push_back(0.0);
+
+    // A and B and C
     for(int i=0; i < s_dA; i++)
         A.push_back(0.0);
 
     for(int i=0; i < (s_dB+1); i++)
         B.push_back(0.0);
 
+    for(int i=0; i < (s_dC+1); i++)
+        C.push_back(0.0);
+
     // P
-    p.resize(s_dA+s_dB+1,s_dA+s_dB+1);
+    p.resize(s_dA + s_dB + s_dC + 1, s_dA + s_dB + s_dC + 1);
 
     for(int i=0; i < (s_dA+s_dB+1); i++)
     {
@@ -142,11 +165,11 @@ void Identify::Identify_initialization()
     }
 
     // Diag
-    diag.resize(s_dA+s_dB+1,s_dA+s_dB+1);
+    diag.resize(s_dA + s_dB + s_dC + 1, s_dA + s_dB + s_dC + 1);
 
-    for(int i=0; i < (s_dA+s_dB+1); i++)
+    for(int i=0; i < (s_dA + s_dB + s_dC + 1); i++)
     {
-        for(int j=0; j < (s_dA+s_dB+1); j++)
+        for(int j=0; j < (s_dA + s_dB + s_dC + 1); j++)
         {
             if(j==i)
                 diag(i,j) = 1.0 * (1/lambda_zap);
@@ -156,16 +179,12 @@ void Identify::Identify_initialization()
     }
 
     // Theta
-    theta.resize(s_dA+s_dB+1,1);
-    for(int i=0; i< s_dA+s_dB+1; i++ )
+    theta.resize(s_dA + s_dB + s_dC + 1, 1);
+    for(int i=0; i< s_dA + s_dB + s_dC + 1; i++ )
         theta(i,0) = 0.0;
 
     // Phi
-    phi.resize(s_dA+s_dB+1,1);
-    for(int i=0; i< s_dA+s_dB+1; i++ )
+    phi.resize(s_dA + s_dB + s_dC + 1, 1);
+    for(int i=0; i< s_dA + s_dB + 1; i++ )
         phi(i,0) = 0.0;
-
 }
-
-
-

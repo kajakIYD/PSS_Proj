@@ -15,8 +15,10 @@ public:
     int switchTimePeriod;
     std::vector<double> A;
     std::vector<double> B;
+    std::vector<double> C;
     std::vector<double> A_N;
     std::vector<double> B_N;
+    std::vector<double> C_N;
     double kr;
     double Ti;
     double Td;

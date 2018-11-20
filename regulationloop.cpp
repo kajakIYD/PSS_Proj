@@ -8,7 +8,7 @@ RegulationLoop::~RegulationLoop()
     delete s_reg;
 }
 
-RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, Identify *identify, QString currentRegType) :
+RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, IdentifyUber *identify, QString currentRegType) :
     s_siso(siso),
     s_reg(regulator),
     s_generator(generator),
