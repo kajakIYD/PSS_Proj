@@ -44,7 +44,8 @@ SOURCES += \
     regulationloop.cpp \
     pid.cpp \
     identify.cpp \
-    gpc.cpp
+    gpc.cpp \
+    zpp.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -63,7 +64,8 @@ HEADERS += \
     regulationloop.h \
     pid.h \
     identify.h \
-    gpc.h
+    gpc.h \
+    zpp.h
 
 FORMS += \
         mainwindow.ui

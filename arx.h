@@ -26,6 +26,13 @@ public:
      * Used for getting time of parameter switching
      */
     int GetSwitchTime();
+
+    /*!
+     * \brief GetSwitchPeriod
+     * \return switch period:p
+     */
+    int GetSwitchPeriod();
+
     /*!
      * \brief UpdateParameters();
      * Used for updating parameters of arx object during simulation
@@ -101,6 +108,8 @@ private:
     std::default_random_engine generator;
     std::vector<double> s_parA;
     std::vector<double> s_parB;
+    std::vector<double> s_changes_parA;
+    std::vector<double> s_changes_parB;
     std::deque<double> u;
     std::deque<double> y;
     std::deque<double> yFromBeginning;
@@ -110,8 +119,10 @@ private:
     int s_k;
     int s_time = 0;
     int s_switchTime=0;
+    int s_switchTimePeriod = 0;
     double s_var = 0.00000001;
 
+    void CalculateParamChanges();
 };
 
 #endif // ARX_H

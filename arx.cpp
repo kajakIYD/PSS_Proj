@@ -3,13 +3,14 @@
 ARX::ARX()
 {
     //destrctor and make it aggregation(outside of that class, in mw)
-    this->conf = new Config(PUT_PATH_HERE);
+    this->conf = new Config("C:\\!Maciej Kusnierz\\TA\\PSS_Proj\\PSS_Proj\\Config\\PSS_Config.xml");
 
     s_parA = conf->A;
     s_parB = conf->B;
 
     s_k = conf->delay;
     s_switchTime = conf->switchTime;
+    s_switchTimePeriod = conf->switchTimePeriod;
 
     // stopnie wielomianów
     s_dA = s_parA.size();
@@ -22,8 +23,24 @@ ARX::ARX()
     for(int i=0;i < s_dB+s_k+1 ;i++)
     u.push_back(0);
 
+    //Licz zmiane
+    CalculateParamChanges();
+
 }
 
+void ARX::CalculateParamChanges()
+{
+    for(int i=0; i<s_dA; i++)
+    {
+        auto tmp = (conf->A_N.at(i) - s_parA.at(i))/s_switchTimePeriod;
+        s_changes_parA.push_back((conf->A_N.at(i) - s_parA.at(i))/s_switchTimePeriod);
+    }
+    for(int i=0; i<=s_dB; i++)
+    {
+        auto tmp = (conf->B_N.at(i) - s_parB.at(i))/s_switchTimePeriod;
+        s_changes_parB.push_back((conf->B_N.at(i) - s_parB.at(i))/s_switchTimePeriod);
+    }
+}
 
 ARX::~ARX()
 {
@@ -33,8 +50,16 @@ ARX::~ARX()
 
 void ARX::UpdateParameters()
 {
-    s_parA = conf->A_N;
-    s_parB = conf->B_N;
+    for(int i=0; i<s_dA; i++)
+    {
+        s_parA.at(i) = s_parA.at(i) + s_changes_parA.at(i);
+    }
+    for(int i=0; i<=s_dB; i++)
+    {
+        s_parB.at(i) = s_parB.at(i) + s_changes_parB.at(i);
+    }
+    //s_parA = conf->A_N;
+    //s_parB = conf->B_N;
 }
 
 void ARX::ResetParameters()
@@ -71,6 +96,11 @@ int ARX::Getk()
 int ARX::GetSwitchTime()
 {
     return this->s_switchTime;
+}
+
+int ARX::GetSwitchPeriod()
+{
+    return this->s_switchTimePeriod;
 }
 
 double ARX::Simulate_step(double input)

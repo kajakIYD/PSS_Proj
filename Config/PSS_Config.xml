@@ -15,7 +15,7 @@
 	<description>
 	JustBParams
 	</description>
-	<value>0.15</value>
+	<value>0.128 0.08</value>
 	<valueN>0.2</valueN>
 	</b_Parameters>
 	
@@ -23,13 +23,17 @@
 	<description>
 	JustAParams
 	</description>
-	<value>0.1</value>
+	<value>-1.038 0.247</value>
 	<valueN>0.2</valueN>
 	</a_Parameters>
 	
 	<switch_time>
-	<value> 500 </value>
+	<value> 200 </value>
 	</switch_time>
+	
+	<switch_time_period>
+	<value> 10 </value>
+	</switch_time_period>
 	
 	<kr>
 	<value> 1 </value>

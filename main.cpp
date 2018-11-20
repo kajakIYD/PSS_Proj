@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     ARX *arx = new ARX;
     ARX *paralelArx = new ARX;
-    Config *conf = new Config(PUT_YOUR_PATH_HERE);
-    Generator *generator = new Generator(PUT_YOUR_PATH_HERE);
+    Config *conf = new Config("C:\\!Maciej Kusnierz\\TA\\PSS_Proj\\PSS_Proj\\Config\\PSS_Config.xml");
+    Generator *generator = new Generator("C:\\!Maciej Kusnierz\\TA\\PSS_Proj\\PSS_Proj\\Config\\PSS_Config.xml");
     PID *pid = new PID(conf->kr, conf->Ti, conf->Td, conf->N, conf->b, conf->max_u, conf->min_u, generator);
 
     //MainWindow w;

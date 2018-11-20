@@ -230,6 +230,17 @@ bool Config::LoadValues(const char* filePath)
                             reader.skipCurrentElement();
                     }
                 }
+                else if(reader.name() == "switch_time_period"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            this->switchTimePeriod = string_to_double(str);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
                 else if(reader.name() == "switch_time"){
                     while(reader.readNextStartElement()){
                         if(reader.name() == "value"){

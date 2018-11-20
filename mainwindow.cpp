@@ -86,7 +86,7 @@ void MainWindow::updateView()
 {
     //s_p->time=time;
 
-    if (MainWindow::time>s_arx->GetSwitchTime())
+    if (MainWindow::time>s_arx->GetSwitchTime() && MainWindow::time < s_arx->GetSwitchTime() + s_arx->GetSwitchPeriod())
     {
         s_arx->UpdateParameters();
         s_paralelArx->UpdateParameters();
@@ -120,7 +120,11 @@ void MainWindow::updateView()
 
             theta = s_id->Get_param();
         }
-        if (time>0) DisplayIdentParams();
+        if (time>0)
+        {
+            DisplayIdentParams();
+            DisplayRealParams();
+        }
         //PlotSP();
         MainWindow::time++;
         s_regLoop->time = time;
@@ -130,8 +134,10 @@ void MainWindow::updateView()
 void MainWindow::updateViewStep()
 {
     //s_p->time=time;
-    if (MainWindow::time>s_arx->GetSwitchTime())
+    if (MainWindow::time>s_arx->GetSwitchTime() && MainWindow::time<s_arx->GetSwitchTime() + s_arx->GetSwitchPeriod())
+    {
         s_arx->UpdateParameters();
+    }
     if (restarted)
     {
         s_arx->ResetParameters();
@@ -145,7 +151,11 @@ void MainWindow::updateViewStep()
 
     s_id->Identify_step(U[0],Y[0]);
     //theta = s_id->Get_param();
-    if (time>0) DisplayIdentParams();
+    if (time>0)
+    {
+        DisplayIdentParams();
+        DisplayRealParams();
+    }
     //PlotSP();
     MainWindow::time++;
     s_regLoop->time = MainWindow::time;
@@ -181,6 +191,22 @@ void MainWindow::DisplayIdentParams()
         idParams = idParams.append(stringToQString(doubleToString(theta.at(i))) + " ");
     }
     ui->textBrowser_A_ident_coeffs->setText(idParams);
+}
+
+void MainWindow::DisplayRealParams()
+{
+    QString idParams = "";
+    for (int i=0; i < s_dA;i++)
+    {
+        idParams = idParams.append(stringToQString(doubleToString(s_arx->GetA().at(i))) + " ");
+    }
+    ui->textBrowser_A_real_coeffs->setText(idParams);
+    idParams = "";
+    for (int i=0; i <= s_dB;i++)
+    {
+        idParams = idParams.append(stringToQString(doubleToString(s_arx->GetB().at(i))) + " ");
+    }
+    ui->textBrowser_B_real_coeffs->setText(idParams);
 }
 
 

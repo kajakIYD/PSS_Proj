@@ -55,6 +55,7 @@ private:
     void PlotSP();
     void updateViewStep();
     void DisplayIdentParams();
+    void DisplayRealParams();
     string doubleToString(double val);
     QString stringToQString(string str);
 

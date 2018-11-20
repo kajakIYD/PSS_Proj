@@ -12,6 +12,7 @@ public:
     Config();
     int delay;
     int switchTime;
+    int switchTimePeriod;
     std::vector<double> A;
     std::vector<double> B;
     std::vector<double> A_N;
