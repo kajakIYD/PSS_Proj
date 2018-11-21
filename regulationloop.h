@@ -9,6 +9,8 @@
 #include "gpc.h"
 #include "Xgenerator.h"
 #include "identify.h"
+#include "identifyarmax.h"
+#include "identifyuber.h"
 #include <QString>
 
 
@@ -28,7 +30,7 @@ public:
      * Identify - pointer to identification object
      * QString - current regulator type
      */
-    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO* paralel_Siso, Identify *identify, QString currentRegType="PID");
+    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO* paralel_Siso, IdentifyUber *identify, QString currentRegType="PID");
     /*!
      * \brief Destructor
      */
@@ -84,7 +86,7 @@ private:
     SISO *s_siso;
     SISO *s_paralelSiso;
     Generator *s_generator;
-    Identify *s_identify;
+    IdentifyUber *s_identify;
 
     double s_output;
     double s_input;

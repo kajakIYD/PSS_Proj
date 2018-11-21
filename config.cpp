@@ -193,6 +193,24 @@ bool Config::LoadValues(const char* filePath)
                             reader.skipCurrentElement();
                     }
                 }
+                else if(reader.name() == "c_Parameters"){
+                    while(reader.readNextStartElement()){
+                        if(reader.name() == "value"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            std::vector<std::string> x = split(str, ',');
+                            C = ExtractParams(x);
+                        }
+                        else if(reader.name() == "valueN"){
+                            QString s = reader.readElementText();
+                            std::string str = s.toUtf8().constData();
+                            std::vector<std::string> x = split(str, ',');
+                            C_N = ExtractParams(x);
+                        }
+                        else
+                            reader.skipCurrentElement();
+                    }
+                }
                 else if(reader.name() == "b_Parameters"){
                     while(reader.readNextStartElement()){
                         if(reader.name() == "value"){

@@ -8,7 +8,7 @@ RegulationLoop::~RegulationLoop()
     delete s_reg;
 }
 
-RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, Identify *identify, QString currentRegType) :
+RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, IdentifyUber *identify, QString currentRegType) :
     s_siso(siso),
     s_reg(regulator),
     s_generator(generator),
@@ -18,7 +18,7 @@ RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *gene
 {
     s_paralelSiso = paralelSiso;
    //Open file
-   s_file.open( "E:\\Qt\\Projects\\PSS_New\\PSS\\Config\\Meas.txt", std::ios::out );
+   s_file.open( "C:\\PSS\\Meas.txt", std::ios::out );
 }
 
 double RegulationLoop::Simulate_step(double input)

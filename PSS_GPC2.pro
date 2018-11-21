@@ -45,7 +45,10 @@ SOURCES += \
     pid.cpp \
     identify.cpp \
     gpc.cpp \
-    zpp.cpp
+    zpp.cpp \
+    identifyuber.cpp \
+    armax.cpp \
+    identifyarmax.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -65,7 +68,10 @@ HEADERS += \
     pid.h \
     identify.h \
     gpc.h \
-    zpp.h
+    zpp.h \
+    identifyuber.h \
+    armax.h \
+    identifyarmax.h
 
 FORMS += \
         mainwindow.ui

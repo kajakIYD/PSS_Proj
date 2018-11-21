@@ -1,5 +1,5 @@
-#ifndef IDENTIFY_H
-#define IDENTIFY_H
+#ifndef IDENTIFYARMAX_H
+#define IDENTIFYARMAX_H
 
 #include "identifyuber.h"
 
@@ -12,12 +12,11 @@
 using namespace Eigen;
 using namespace std;
 
-class Identify : public IdentifyUber
+class IdentifyARMAX : public IdentifyUber
 {
 public:
-    Identify(int dA, int dB, int k);
-    ~Identify();
-
+    IdentifyARMAX(int dA, int dB, int dC, int k);
+    ~IdentifyARMAX();
     /*!
      * \brief Identification_step
      * perform one Identification step
@@ -40,18 +39,22 @@ public:
      * Getter function to get B polynomial
      */
     std::vector<double> Get_B();
-
-    std::vector<double> Get_C();
+    /*!
+     * \brief Get_B
+     * Getter function to get B polynomial
+     */
+   std::vector<double> Get_C();
 
 private:
 
     void Identify_initialization();
 
-    deque<double> u, y;
-    std::vector<double> A, B;
+    deque<double> u, y, e_dashed;
+    std::vector<double> A, B, C;
 
     int s_dA;
     int s_dB;
+    int s_dC;
     int s_k;
 
     double lambda = 1;          // ze wzoru 32.8
@@ -71,4 +74,4 @@ private:
     MatrixXd phi;
 };
 
-#endif // IDENTIFY_H
+#endif // IDENTIFYARMAX_H

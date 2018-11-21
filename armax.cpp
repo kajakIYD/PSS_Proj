@@ -1,12 +1,13 @@
-#include "arx.h"
+#include "armax.h"
 
-ARX::ARX()
+ARMAX::ARMAX()
 {
     //destrctor and make it aggregation(outside of that class, in mw)
     this->conf = new Config("C:\\PSS\\PSS_Config.xml");
 
     s_parA = conf->A;
     s_parB = conf->B;
+    s_parC = conf->C;
 
     s_k = conf->delay;
     s_switchTime = conf->switchTime;
@@ -15,20 +16,25 @@ ARX::ARX()
     // stopnie wielomianów
     s_dA = s_parA.size();
     s_dB = s_parB.size()-1;
+    s_dC = s_parC.size();
 
     // wstępne zerowanie wektorów
     for(int i=0; i < s_dA;i++)
-    y.push_back(0);
+        y.push_back(0);
 
-    for(int i=0;i < s_dB+s_k+1 ;i++)
-    u.push_back(0);
+    for(int i=0;i < s_dB + s_k + 1; i++)
+        u.push_back(0);
+
+    for(int i=0;i < s_dC + 1; i++)
+        e.push_back(0);
+
 
     //Licz zmiane
     CalculateParamChanges();
 
 }
 
-void ARX::CalculateParamChanges()
+void ARMAX::CalculateParamChanges()
 {
     for(int i=0; i<s_dA; i++)
     {
@@ -40,15 +46,20 @@ void ARX::CalculateParamChanges()
         auto tmp = (conf->B_N.at(i) - s_parB.at(i))/s_switchTimePeriod;
         s_changes_parB.push_back((conf->B_N.at(i) - s_parB.at(i))/s_switchTimePeriod);
     }
+    for(int i=0; i<s_dC; i++)
+    {
+        auto tmp = (conf->C_N.at(i) - s_parC.at(i))/s_switchTimePeriod;
+        s_changes_parC.push_back((conf->C_N.at(i) - s_parC.at(i))/s_switchTimePeriod);
+    }
 }
 
-ARX::~ARX()
+ARMAX::~ARMAX()
 {
 
 }
 
 
-void ARX::UpdateParameters()
+void ARMAX::UpdateParameters()
 {
     for(int i=0; i<s_dA; i++)
     {
@@ -58,52 +69,65 @@ void ARX::UpdateParameters()
     {
         s_parB.at(i) = s_parB.at(i) + s_changes_parB.at(i);
     }
-    //s_parA = conf->A_N;
-    //s_parB = conf->B_N;
+    for(int i=0; i<s_dC; i++)
+    {
+        s_parC.at(i) = s_parC.at(i) + s_changes_parC.at(i);
+    }
 }
 
-void ARX::ResetParameters()
+void ARMAX::ResetParameters()
 {
     s_parA = conf->A;
     s_parB = conf->B;
+    s_parC = conf->C;
 }
 
-std::vector<double> ARX::GetA()
+std::vector<double> ARMAX::GetA()
 {
     return s_parA;
 }
 
-std::vector<double> ARX::GetB()
+std::vector<double> ARMAX::GetB()
 {
     return s_parB;
 }
 
-int ARX::GetAdegree()
+std::vector<double> ARMAX::GetC()
+{
+    return s_parC;
+}
+
+int ARMAX::GetAdegree()
 {
     return s_dA;
 }
 
-int ARX::GetBdegree()
+int ARMAX::GetBdegree()
 {
     return s_dB;
 }
 
-int ARX::Getk()
+int ARMAX::GetCdegree()
+{
+    return s_dC;
+}
+
+int ARMAX::Getk()
 {
     return s_k;
 }
 
-int ARX::GetSwitchTime()
+int ARMAX::GetSwitchTime()
 {
     return this->s_switchTime;
 }
 
-int ARX::GetSwitchPeriod()
+int ARMAX::GetSwitchPeriod()
 {
     return this->s_switchTimePeriod;
 }
 
-double ARX::Simulate_step(double input)
+double ARMAX::Simulate_step(double input)
 {
     //make it static (optimal)
 //    static std::deque<double> subU(s_k+s_dB);
@@ -111,10 +135,13 @@ double ARX::Simulate_step(double input)
 
     static std::deque<double> subU;
 
+    static std::deque<double> subE;
 
     // generate random e value
     std::normal_distribution<double> distribution(0, s_var);
-    double e = distribution(generator);
+    e.pop_back();
+    e.push_front(distribution(generator));
+
 
     // delete oldest value and push newest
     u.pop_back();
@@ -125,12 +152,17 @@ double ARX::Simulate_step(double input)
     advance(it, this->s_k);
     std::copy(it, u.end(), std::front_inserter(subU));//std::back_inserter(subU));
 
-    // copy y vector with dA offset
+    // copy y vector to dA, no offset
     it = y.begin();
     advance(it, this->s_dA);
     std::copy(y.begin(), it, std::front_inserter(subY));
 
-    double output1, output2, dist;
+    // copy e vector to dC, no offset
+    it = e.begin();
+    advance(it, this->s_dC);
+    std::copy(e.begin(), it, std::front_inserter(subE));
+
+    double output1, output2, output3;//dist;
     // generate new output
 //    auto it_subU = subU.end();
 //    advance(it_subU, -this->s_dB);
@@ -138,11 +170,18 @@ double ARX::Simulate_step(double input)
 //    advance(it_subY, -this->s_dA);
     output1 = inner_product(s_parB.begin(), s_parB.end(), subU.begin(), 0.0);
     output2 = - inner_product(s_parA.begin(), s_parA.end(), subY.begin(), 0.0);
-    dist = 0 - e;
+    output3 = inner_product(s_parC.begin(), s_parC.end(), subE.begin(), 0.0);
+    /*for (int i = 0; i <= s_dC; ++i)
+    {
+        dist -= s_parC * e.at(i);
+    }*/
+
+
+
 
     this->y.pop_back();
-    this->y.push_front(output1 + output2 + dist);
-    double output = output1 + output2 + dist;
+    this->y.push_front(output1 + output2 + output3);
+    double output = output1 + output2 + output3;
 
     //Powiadom wykres
 //    Notify(input, output);
@@ -154,30 +193,30 @@ double ARX::Simulate_step(double input)
     return output;
 }
 
-std::deque<double> ARX::GetNewestY()
+std::deque<double> ARMAX::GetNewestY()
 {
     return y;
 }
 
 
-std::deque<double> ARX::GetY()
+std::deque<double> ARMAX::GetY()
 {
     return yFromBeginning;
 }
 
 
-std::deque<double> ARX::GetU()
+std::deque<double> ARMAX::GetU()
 {
     return u;
 }
 
-void ARX::SetY(std::deque<double> yNew)
+void ARMAX::SetY(std::deque<double> yNew)
 {
     this->y = yNew;
 }
 
 
-void ARX::SetU(std::deque<double> uNew)
+void ARMAX::SetU(std::deque<double> uNew)
 {
     this->u = uNew;
 }
