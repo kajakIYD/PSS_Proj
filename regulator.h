@@ -4,6 +4,7 @@
 #include "subject.h"
 #include "siso.h"
 #include "Xgenerator.h"
+#include "identifyuber.h"
 #include <random>
 
 //Obiekt powinien powiadamiać zarówno plota jak i obiekt
@@ -33,6 +34,7 @@ public:
      * \brief Simple getter for regulation setpoint (double SP)
      */
     virtual double GetSP()=0;
+    virtual IdentifyUber* GetId()=0;
 
     double max_u;
     double min_u;

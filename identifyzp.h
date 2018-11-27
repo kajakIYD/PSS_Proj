@@ -1,53 +1,46 @@
-#ifndef IDENTIFY_H
-#define IDENTIFY_H
+#ifndef IDENTIFYZP_H
+#define IDENTIFYZP_H
 
 #include "identifyuber.h"
 
-#include <cmath>
-#include <deque>
 #include <vector>
+#include <deque>
 #include <iostream>
 #include <Eigen/Dense>
 
 using namespace Eigen;
 using namespace std;
 
-class Identify : public IdentifyUber
+class IdentifyZP : public IdentifyUber
 {
 public:
-    Identify(int dA, int dB, int k);
-    ~Identify();
-
+    IdentifyZP(int s_dR, int s_dS, int s_dT, int s_k);
     /*!
      * \brief Identification_step
      * perform one Identification step
      * double input -
      */
-    void Identify_step(std::vector<double> args);
-    /*!
-     * \brief Get_param
-     * Getter function to get identify parameters
-     * double input -
-     */
+    void Identify_step(std::vector<double> args) override;
     std::deque<std::vector<double>> Get_param() override;
 
 private:
-
     void Identify_initialization();
 
-    deque<double> u, y;
-    std::vector<double> A, B;
+    deque<double> u, y, w;
+    std::vector<double> R, S, T;
 
-    int s_dA;
-    int s_dB;
+    int s_dR;
+    int s_dS;
+    int s_dT;
     int s_k;
 
     double lambda = 1;          // ze wzoru 32.8
     double lambda_zap = 0.98;   // dla metody zapominania
     double beta;
     double eps;
+    double gamma;
 
-    // Wektor nieznanych parametrów obiektu
+    // Wektor nieznanych parametrów R,S,T
     MatrixXd theta;
     // Macierz kowariancji
     MatrixXd p;
@@ -59,4 +52,4 @@ private:
     MatrixXd phi;
 };
 
-#endif // IDENTIFY_H
+#endif // IDENTIFYZP_H

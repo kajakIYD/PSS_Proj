@@ -8,13 +8,11 @@ RegulationLoop::~RegulationLoop()
     delete s_reg;
 }
 
-RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, IdentifyUber *identify, QString currentRegType) :
+RegulationLoop::RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO *paralelSiso, QString currentRegType) :
     s_siso(siso),
     s_reg(regulator),
     s_generator(generator),
-    s_currentRegType(currentRegType),
-    s_identify(identify)
-
+    s_currentRegType(currentRegType)
 {
     s_paralelSiso = paralelSiso;
    //Open file
@@ -39,7 +37,10 @@ double RegulationLoop::GetSP()
     return s_reg->GetSP();
 }
 
-
+Regulator* RegulationLoop::GetRegulator()
+{
+    return s_reg;
+}
 
 void RegulationLoop::UpdatePlot()
 {
@@ -77,7 +78,7 @@ void RegulationLoop::ChangeRegParameters(double kr, double Ti, double Td, double
     if (s_currentRegType=="GPC")
     {
        delete s_reg;
-       s_reg = new GPC(H, L, alpha, ro, max_u, min_u, s_generator, (ARX*)s_siso, time, s_y, 0, (ARX*)s_paralelSiso, (Identify*)s_identify);
+       s_reg = new GPC(H, L, alpha, ro, max_u, min_u, s_generator, (ARX*)s_siso, time, s_y, 0, (ARX*)s_paralelSiso);
     }
    //Other regulators in the same way
 }

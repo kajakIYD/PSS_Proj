@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     PID *pid = new PID(conf->kr, conf->Ti, conf->Td, conf->N, conf->b, conf->max_u, conf->min_u, generator);
 
     //MainWindow w;
-    //MainWindow w(arx, pid, generator, conf, paralelArx);
-    MainWindow w(armax, pid, generator, conf, paralelArmax);
+    MainWindow w(arx, pid, generator, conf, paralelArx);
+    //MainWindow w(armax, pid, generator, conf, paralelArmax);
 
     w.show();
 

@@ -67,6 +67,11 @@ double PID::GetSP()
     return SP;
 }
 
+IdentifyUber* PID::GetId()
+{
+    return NULL;
+}
+
 void PID::Update(double y)
 {
     this->Simulate_step(y);

@@ -17,8 +17,10 @@ s_k(k)
 Identify::~Identify()
 {}
 
-void Identify::Identify_step(double new_u, double new_y)
+void Identify::Identify_step(std::vector<double> args)
 {
+    double new_u = args[0];
+    double new_y = args[1];
 
     // krok 1 aktualizacja wektora danych
 
@@ -81,37 +83,23 @@ void Identify::Identify_step(double new_u, double new_y)
 
 }
 
-deque<double> Identify::Get_param()
+deque<vector<double>> Identify::Get_param()
 {
-    deque<double> tmp;
-    for(int i=0; i < s_dA+s_dB+1; i++)
+    vector<double> tmp;
+    deque<vector<double>> out;
+    for(int i=0; i < s_dA; i++)
     {
         tmp.push_back(theta(i,0));
     }
-    return tmp;
+    out.push_back(tmp);
+    tmp.clear();
+    for(int i=s_dA; i < s_dA+s_dB+1; i++)
+    {
+        tmp.push_back(theta(i,0));
+    }
+    out.push_back(tmp);
+    return out;
 }
-
-vector<double> Identify::Get_A()
-{   A.clear();
-    for(int i=s_dB+1; i<s_dA+s_dB+1; i++)
-        A.push_back(theta(i,0));
-    return A;
-}
-
-vector<double> Identify::Get_B()
-{
-    B.clear();
-    for(int i=0; i<s_dB+1; i++)
-        B.push_back(theta(i,0));
-    return B;
-}
-
-std::vector<double> Identify::Get_C()
-{
-    std::vector<double> a;
-    return a;
-}
-
 
 void Identify::Identify_initialization()
 {

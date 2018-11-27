@@ -24,7 +24,7 @@ public:
      * signal generator (generator) that helps to generate SetPoint signal
      * and two arx's -> one for real time simulation, second for model prediction
      */
-    GPC(double H, double L, double alpha, double ro, double max_u, double min_u, Generator *generator, ARX *arx, int time, std::vector<double>sisoOutput, double control, ARX* paralel_ARX, Identify* identify);
+    GPC(double H, double L, double alpha, double ro, double max_u, double min_u, Generator *generator, ARX *arx, int time, std::vector<double>sisoOutput, double control, ARX* paralel_ARX);
     GPC(){}
     /*!
      * \brief Destructor
@@ -51,6 +51,10 @@ public:
      * \brief Simple getter for regulation setPoint
      */
     double GetSP();
+    /*!
+     * \brief Simple getter for Identify object pointer
+     */
+    IdentifyUber* GetId();
     /*!
      * \brief Setter for Simulation time for regulator (in case of resetting simulation)
      */

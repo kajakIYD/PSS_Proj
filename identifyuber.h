@@ -17,28 +17,13 @@ class IdentifyUber
 public:
 
 
-    virtual void Identify_step(double u, double y) = 0;
+    virtual void Identify_step(std::vector<double> args) = 0;
     /*!
      * \brief Get_param
      * Getter function to get identify parameters
      * double input -
      */
-    virtual deque<double> Get_param() = 0;
-    /*!
-     * \brief Get_A
-     * Getter function to get A polynomial
-     */
-    virtual std::vector<double> Get_A() = 0;
-    /*!
-     * \brief Get_B
-     * Getter function to get B polynomial
-     */
-    virtual std::vector<double> Get_B() = 0;
-    /*!
-     * \brief Get_B
-     * Getter function to get B polynomial
-     */
-    virtual std::vector<double> Get_C() = 0;
+    virtual deque<vector<double>> Get_param() = 0;
 
     virtual ~IdentifyUber() {}
 };

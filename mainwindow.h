@@ -10,11 +10,12 @@
 #include "config.h"
 #include "regulationloop.h"
 #include "identify.h"
-#include "identifyarmax.h"
 #include "identifyuber.h"
+#include "identifyzp.h"
 #include <string>
 #include <sstream>
 #include <deque>
+#include <algorithm>
 
 namespace Ui {
 class MainWindow;
@@ -65,25 +66,21 @@ private:
 
     Ui::MainWindow *ui;
 
-    //ARX *s_arx;
-    //ARX *s_paralelArx;
-    ARMAX *s_arx;
-    ARMAX *s_paralelArx;
+    ARX *s_arx;
+    ARX *s_paralelArx;
     Config *s_conf;
     Generator *s_generator;
     QTimer *timer;
     PID *s_pid;
     RegulationLoop *s_regLoop;
-    IdentifyUber *s_id;
 
     PlotDelegate *s_plot1Delegate;
     PlotDelegate *s_plot2Delegate;
     PlotDelegate *s_plot3Delegate;
 
-
     QVector<double> s_SPVec = {};
     QVector<double> s_TimeVec = {};
-    deque<double> theta;
+    std::deque<std::vector<double>> theta;
     std::vector<double> A;
     std::vector<double> B;
 
@@ -92,6 +89,9 @@ private:
     int  s_dA;
     int s_dB;
     int s_dC;
+    int s_dR;
+    int s_dS;
+    int s_dT;
     bool start=false;
     bool step = false;
     bool restarted = false;

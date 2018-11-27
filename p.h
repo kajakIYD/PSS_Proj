@@ -37,7 +37,10 @@ public:
     double GetU();
 
     double GetSP();
-
+    /*!
+     * \brief Simple getter for Identify object pointer
+     */
+    IdentifyUber* GetId();
     /*!
      * \brief Simulation time for regulator
      */

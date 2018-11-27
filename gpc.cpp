@@ -1,22 +1,24 @@
 #include "gpc.h"
 
 
-GPC::GPC(double H, double L, double alpha, double ro, double max_u, double min_u, Generator *generator, ARX *arx, int time, std::vector<double>sisoOutput, double control, ARX *paralelARX, Identify *identify)
+GPC::GPC(double H, double L, double alpha, double ro, double max_u, double min_u, Generator *generator, ARX *arx, int time, std::vector<double>sisoOutput, double control, ARX *paralelARX)
 {
+    s_dA = arx->GetAdegree();
+    s_dB = arx->GetBdegree();
+    int s_k = arx->Getk();
+
+    s_identify = new Identify(s_dA,s_dB,s_k);
+
     s_arx = arx;
     s_H = H;
     s_L = L;
     s_ro = ro;
     s_alpha = alpha;
-    //s_parA = s_arx->GetA();
-    //s_parB = s_arx->GetB();
     s_generator = generator;
     s_paralelARX = paralelARX;
-    s_identify = identify;
-    s_parA = identify->Get_A();
-    s_parB = identify->Get_B();
+    s_parA = s_identify->Get_param()[0];
+    s_parB = s_identify->Get_param()[1];
     s_time = time;
-    //s_sisoOutput = sisoOutput;
     s_currentControl = control;
 
     if (s_time>=H-s_dA)
@@ -28,10 +30,6 @@ GPC::GPC(double H, double L, double alpha, double ro, double max_u, double min_u
         s_referenceTrajectory = VectorXd::Zero(s_H+1);
         s_predictiveSisoOutput = VectorXd::Zero(s_H+1);
     }
-
-    // stopnie wielomianów
-    s_dA = s_parA.size();
-    s_dB = s_parB.size()-1;
 
     // wstępne zerowanie wektorów
     for(int i=0; i < s_dA;i++)
@@ -87,9 +85,15 @@ double GPC::SimulateStepReferenceTrajectory(int j)
 
 double GPC::Simulate_step(double input)
 {
+    deque<double> U = s_arx->GetU();
+    deque<double> Y = s_arx->GetNewestY();
+    std::vector<double> arg;
+    arg.push_back(U[0]);
+    arg.push_back(Y[0]);
+    s_identify->Identify_step(arg);
     //Update to get newest identifications parameters (comment to dead bit test)
-    s_parA = s_identify->Get_A();
-    s_parB = s_identify->Get_B();
+    s_parA = s_identify->Get_param()[0];
+    s_parB = s_identify->Get_param()[1];
     //
     s_SP = s_generator->CalculateSignal(s_time);
     if (s_time > s_dAm+s_H+1)
@@ -176,6 +180,11 @@ double GPC::GetU()
 double GPC::GetSP()
 {
     return s_SP;
+}
+
+IdentifyUber* GPC::GetId()
+{
+    return s_identify;
 }
 
 void GPC::SetSisoOutput(std::vector<double> sisoOutput)

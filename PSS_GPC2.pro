@@ -48,7 +48,7 @@ SOURCES += \
     zpp.cpp \
     identifyuber.cpp \
     armax.cpp \
-    identifyarmax.cpp
+    identifyzp.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -71,7 +71,7 @@ HEADERS += \
     zpp.h \
     identifyuber.h \
     armax.h \
-    identifyarmax.h
+    identifyzp.h
 
 FORMS += \
         mainwindow.ui

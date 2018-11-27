@@ -1,10 +1,10 @@
-#include "identifyarmax.h"
+#include "identifyzp.h"
 
-IdentifyARMAX::IdentifyARMAX(int dA, int dB, int dC, int k):
-s_dA(dA),
-s_dB(dB),
-s_dC(dC),
-s_k(k)
+IdentifyZP::IdentifyZP(int s_dR, int s_dS, int s_dT, int s_k):
+    s_dR(s_dR),
+    s_dS(s_dS),
+    s_dT(s_dT),
+    s_k(s_k)
 {
     // lambda 1 - metoda bez ważenia (w przypadku o. stacj. ustawia się mniej np. 0.99
     //lambda = 0.99;
@@ -12,15 +12,13 @@ s_k(k)
     beta = 1000;
     // Wywołanie funkcji inicjującej macierze i wektory
     Identify_initialization();
-
 }
 
-IdentifyARMAX::~IdentifyARMAX()
-{}
-
-void IdentifyARMAX::Identify_step(double new_u, double new_y)
+void IdentifyZP::Identify_step(std::vector<double> args)
 {
-
+    double new_u = args[0];
+    double new_y = args[1];
+    double new_w = args[2];
     // krok 1 aktualizacja wektora danych
 
     u.push_front(new_u);
@@ -29,15 +27,8 @@ void IdentifyARMAX::Identify_step(double new_u, double new_y)
     y.push_front(new_y);
     y.pop_back();
 
-    //TODO: zrobić ładnie bo jesr brzydko
-    MatrixXd aaa;
-    aaa.resize(1,1);
-    aaa = (phi.transpose() * theta);
-    double e_dashed_current = new_y - aaa(0,0);
-
-    e_dashed.push_front(e_dashed_current);
-    e_dashed.pop_back();
-
+    w.push_front(new_w);
+    w.pop_back();
     // krok 2 wyznaczenie nowego phi
 
     int phi_it = 0;
@@ -56,16 +47,16 @@ void IdentifyARMAX::Identify_step(double new_u, double new_y)
     for(it; it!=y.end(); ++it)
     {
         std::vector<double> temp;
-        phi(phi_it,0) = (-(*it));
+        phi(phi_it,0) = *it;
         phi_it++;
     }
 
-    it = e_dashed.begin();
+    it = w.begin();
     advance(it, 1);
-    for(it; it != e_dashed.end(); ++it)
+    for(it; it!=w.end(); ++it)
     {
         std::vector<double> temp;
-        phi(phi_it, 0) = (*it);
+        phi(phi_it,0) = (-(*it));
         phi_it++;
     }
 
@@ -91,7 +82,9 @@ void IdentifyARMAX::Identify_step(double new_u, double new_y)
     k = p * phi;
     MatrixXd tmp;
     tmp = (phi.transpose()) * theta;
-    eps = new_y - tmp(0,0);
+    //eps = new_y - tmp(0,0);
+    gamma = new_y - w.at(s_k-1);
+    eps = gamma - tmp(0,0);
     // krok 5
 
     // krok aktualizacja wektora estymowanych parametrów
@@ -100,69 +93,60 @@ void IdentifyARMAX::Identify_step(double new_u, double new_y)
 
 }
 
-deque<double> IdentifyARMAX::Get_param()
+deque<vector<double>> IdentifyZP::Get_param()
 {
-    deque<double> tmp;
-    for(int i=0; i < s_dA+s_dB+s_dC+1; i++)
+    vector<double> tmp;
+    deque<vector<double>> out;
+    for(int i=0; i < s_dR; i++)
     {
         tmp.push_back(theta(i,0));
     }
-    return tmp;
+    out.push_back(tmp);
+    tmp.clear();
+    for(int i=s_dR; i < s_dR+s_dS+1; i++)
+    {
+        tmp.push_back(theta(i,0));
+    }
+    out.push_back(tmp);
+    tmp.clear();
+    for(int i=s_dR+s_dS+1; i < s_dR+s_dS+s_dT+2; i++)
+    {
+        tmp.push_back(theta(i,0));
+    }
+    out.push_back(tmp);
+    return out;
 }
 
-vector<double> IdentifyARMAX::Get_A()
-{   A.clear();
-    for(int i=s_dB+1; i<s_dA+s_dB+1; i++)
-        A.push_back(theta(i,0));
-    return A;
-}
-
-vector<double> IdentifyARMAX::Get_B()
+void IdentifyZP::Identify_initialization()
 {
-    B.clear();
-    for(int i=0; i<s_dB+1; i++)
-        B.push_back(theta(i,0));
-    return B;
-}
-
-vector<double> IdentifyARMAX::Get_C()
-{
-    C.clear();
-    for(int i=0; i<s_dC+1; i++)
-        C.push_back(theta(i,0));
-    return C;
-}
-
-void IdentifyARMAX::Identify_initialization()
-{
-    // input
-    for(int i=0; i < (s_dB+s_k+1); i++)
+    // U
+    for(int i=0; i < (s_dR+s_k); i++)
         u.push_back(0.0);
 
-    // output
-    for(int i=0; i < (s_dA+1); i++)
+    // Y
+    for(int i=0; i < (s_dS+s_k+1); i++)
         y.push_back(0.0);
 
-    //estimated e
-    for(int i=0; i < s_dC; i++)
-        e_dashed.push_back(0.0);
+    // W
+    for(int i=0; i < (s_dT+s_k+1); i++)
+        w.push_back(0.0);
 
-    // A and B and C
-    for(int i=0; i < s_dA; i++)
-        A.push_back(0.0);
+    // R,S,T
+    for(int i=0; i < s_dR; i++)
+        R.push_back(0.0);
 
-    for(int i=0; i < (s_dB+1); i++)
-        B.push_back(0.0);
+    for(int i=0; i < (s_dS+1); i++)
+        S.push_back(0.0);
 
-    for(int i=0; i < (s_dC+1); i++)
-        C.push_back(0.0);
+    for(int i=0; i < (s_dT+1); i++)
+        T.push_back(0.0);
 
     // P
-    p.resize(s_dA + s_dB + s_dC + 1, s_dA + s_dB + s_dC + 1);
+    p.resize(s_dR+s_dS+s_dT+2,s_dR+s_dS+s_dT+2);
 
-    for(int i=0; i < (s_dA+s_dB+1); i++)
+    for(int i=0; i < (s_dR+s_dS+s_dT+2); i++)
     {
-        for(int j=0; j < (s_dA+s_dB+1); j++)
+        for(int j=0; j < (s_dR+s_dS+s_dT+2); j++)
         {
             if(j==i)
                 p(i,j) = 1.0 * beta;
@@ -172,11 +156,11 @@ void IdentifyARMAX::Identify_initialization()
     }
 
     // Diag
-    diag.resize(s_dA + s_dB + s_dC + 1, s_dA + s_dB + s_dC + 1);
+    diag.resize(s_dR+s_dS+s_dT+2,s_dR+s_dS+s_dT+2);
 
-    for(int i=0; i < (s_dA + s_dB + s_dC + 1); i++)
+    for(int i=0; i < (s_dR+s_dS+s_dT+2); i++)
     {
-        for(int j=0; j < (s_dA + s_dB + s_dC + 1); j++)
+        for(int j=0; j < (s_dR+s_dS+s_dT+2); j++)
         {
             if(j==i)
                 diag(i,j) = 1.0 * (1/lambda_zap);
@@ -186,12 +170,13 @@ void IdentifyARMAX::Identify_initialization()
     }
 
     // Theta
-    theta.resize(s_dA + s_dB + s_dC + 1, 1);
-    for(int i=0; i< s_dA + s_dB + s_dC + 1; i++ )
+    theta.resize(s_dR+s_dS+s_dT+2,1);
+    for(int i=0; i< s_dR+s_dS+s_dT+2; i++ )
         theta(i,0) = 0.0;
 
     // Phi
-    phi.resize(s_dA + s_dB + s_dC + 1, 1);
-    for(int i=0; i< s_dA + s_dB + 1; i++ )
+    phi.resize(s_dR+s_dS+s_dT+2,1);
+    for(int i=0; i< s_dR+s_dS+s_dT+2; i++ )
         phi(i,0) = 0.0;
+
 }

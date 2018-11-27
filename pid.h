@@ -44,6 +44,10 @@ public:
      */
     double GetSP();
     /*!
+     * \brief Simple getter for Identify object pointer
+     */
+    IdentifyUber* GetId();
+    /*!
      * \brief Setter for Simulation time for regulator (in case of resetting simulation)
      */
     void SetTime(int time);

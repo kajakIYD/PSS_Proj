@@ -9,7 +9,6 @@
 #include "gpc.h"
 #include "Xgenerator.h"
 #include "identify.h"
-#include "identifyarmax.h"
 #include "identifyuber.h"
 #include <QString>
 
@@ -30,7 +29,7 @@ public:
      * Identify - pointer to identification object
      * QString - current regulator type
      */
-    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO* paralel_Siso, IdentifyUber *identify, QString currentRegType="PID");
+    RegulationLoop(SISO *siso, Regulator *regulator, Generator *generator, SISO* paralel_Siso, QString currentRegType="PID");
     /*!
      * \brief Destructor
      */
@@ -64,6 +63,10 @@ public:
      * \brief Simple getter of an simulation output vector
      */
     std::vector<double> GetYVector();
+    /*!
+     * \brief Simple getter of a regulator pointer
+     */
+    Regulator* GetRegulator();
     /*!
      * \brief Method that allows to change regulator parameters,
      * naturally depending on regulator type

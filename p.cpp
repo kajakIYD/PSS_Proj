@@ -27,6 +27,10 @@ double P::GetSP()
     return this->SP;
 }
 
+IdentifyUber* P::GetId()
+{
+    return NULL;
+}
 
 void P::Update(double y)
 {
