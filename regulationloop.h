@@ -68,6 +68,10 @@ public:
      */
     Regulator* GetRegulator();
     /*!
+     * \brief Simple getter of a regulator name
+     */
+    QString GetRegulatorType();
+    /*!
      * \brief Method that allows to change regulator parameters,
      * naturally depending on regulator type
      * kr - gain, Ti - integration time, Td-derivation time

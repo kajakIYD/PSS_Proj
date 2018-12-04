@@ -131,11 +131,7 @@ double ARX::Simulate_step(double input)
     std::copy(y.begin(), it, std::front_inserter(subY));
 
     double output1, output2, dist;
-    // generate new output
-//    auto it_subU = subU.end();
-//    advance(it_subU, -this->s_dB);
-//    auto it_subY = subY.end();
-//    advance(it_subY, -this->s_dA);
+
     output1 = inner_product(s_parB.begin(), s_parB.end(), subU.begin(), 0.0);
     output2 = - inner_product(s_parA.begin(), s_parA.end(), subY.begin(), 0.0);
     dist = 0 - e;
@@ -143,12 +139,6 @@ double ARX::Simulate_step(double input)
     this->y.pop_back();
     this->y.push_front(output1 + output2 + dist);
     double output = output1 + output2 + dist;
-
-    //Powiadom wykres
-//    Notify(input, output);
-
-    //Powiadom regulator
-    //Notify(output);
 
     this->yFromBeginning.push_back(output);
     return output;

@@ -42,6 +42,11 @@ Regulator* RegulationLoop::GetRegulator()
     return s_reg;
 }
 
+QString RegulationLoop::GetRegulatorType()
+{
+    return s_currentRegType;
+}
+
 void RegulationLoop::UpdatePlot()
 {
     Notify(s_input, s_output, s_reg->GetSP());

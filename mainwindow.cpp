@@ -163,7 +163,8 @@ void MainWindow::updateView()
             deque<double> Y = s_arx->GetNewestY();
             double SP = s_regLoop->GetSP();
 
-            if(ui->regType->currentText()=="GPC")
+            //if(ui->regType->currentText()=="GPC")
+            if(s_regLoop->GetRegulatorType() == "GPC")
             theta = s_regLoop->GetRegulator()->GetId()->Get_param();
         }
         if (time>0)
@@ -225,7 +226,7 @@ void MainWindow::PlotSP()
 
 void MainWindow::DisplayIdentParams()
 {
-    if(ui->regType->currentText() == "GPC")
+    if(s_regLoop->GetRegulatorType() == "GPC")//ui->regType->currentText() == "GPC")
     {
         QString idParams = "";
         idParams = "";
